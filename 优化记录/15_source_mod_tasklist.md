@@ -1,5 +1,10 @@
 # 15 · 改源码跑实测 tpot 任务清单(严格按序执行)
 
+> **⚠️【勘误 2026-09——必须优先阅读】**:本文件对 **C1 落地形态**存在两套相互矛盾的描述,均为真实中间版本,请以**最终修改版**(`qwen3_dcu_optimize/vllm_final/` + 《基于国产加速卡的千问大模型推理服务优化说明文档》第一章)为准:
+> **权威形态** = ①`rocm.py` 新增 `_ON_GFX936` 与 `on_gfx936()` 谓词(**不**修改 `_ON_GFX9` 三成员列表);②`utils.py` 的 `use_skinny` 条件为 `(on_gfx9() or on_gfx936())` + 独立 `if on_gfx936()` **LLMM1-only 路由**(仅 `n==1 and m%4==0 and k<=8192 and bias is None`,k>8192 硬封顶回退);③`csrc/rocm/skinny_gemms.cu` 宏守卫纳入 gfx936/938(`__HIP_DCU_GFX93X__`);④`TORCH_BLAS_PREFER_HIPBLASLT=0`。
+> **中间版本表述**(勿作为现配置依据):"把 gfx936 直接加进 `_ON_GFX9` 列表"(`utils.py` 走 **wvSplitK** 分支,见本文件 §80.02 核对与 `11`/`18` 相应行;`15` §C9b 的"LLMM1 优先"实验为另一中间态,已回退作废)。
+> 本文件其余结论(C5b/C5a/C4-3 灾难/C8/C9b 中性/80.02 核对)不受影响。
+
 > **创建:2026-07-12。**
 > **目的**:用户指令"直接按概率大依次改源码跑一遍看效果,别再跑 bench/trace"。本文是严格任务清单,**逐步执行,不跳步,不跑偏**。
 > **唯一权威源码**:本地 `vllm_optimize_data/` 下 vllm_cscc 副本 + DCU `/public/home/xdzs2026_c150/zya/vllm_cscc`。**绝不看容器 dist-packages**。

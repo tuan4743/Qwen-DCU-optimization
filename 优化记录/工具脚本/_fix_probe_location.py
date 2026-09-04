@@ -7,6 +7,17 @@
   its `set_cudagraph_capturing_enabled(True)`.
 - The end block already sits inside capture_model after graph_capture; keep it.
 Idempotent: safe to run multiple times.
+
+Usage
+-----
+    python _fix_probe_location.py      # inside the container
+
+Generalization notes
+--------------------
+- Generic relocate pattern: strip misplaced stub blocks, then re-insert at
+  the verified target anchor. Parameterize TARGET (runner file) and the
+  anchors for other vLLM versions; verify function ownership of an anchor
+  with __probe_dcu.py before patching.
 """
 import sys
 

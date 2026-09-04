@@ -1,6 +1,6 @@
 """Capture-time instrumentation to locate the 256MB int32 fill source.
 
-GOAL
+Purpose
 ----
 The baseline (cudagraph ON) run spends 62.4% of GPU time on
 `at::native::vectorized_elementwise_kernel<..., FillFunctor<int>, ...>`,

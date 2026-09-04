@@ -1,9 +1,9 @@
 # 国产加速卡大模型推理优化实录:Qwen3.5-27B × 海光 DCU gfx936 × vLLM
 
-> **将生产级大语言模型推理引入本土加速器** —— 在 Hygon DCU gfx936（非 CUDA、ROCm 系列架构）上的完整适配及内核级优化记录，实测 **输入长度分段的吞吐量提升 60% ~ 163%**。
-> 终稿说明文档见 `优化记录/基于国产加速卡的千问大模型推理服务优化说明文档.md`
-> 本项目为个人独立完成（除PyTorch/HIP基础库外），**未使用任何第三方手写高性能算子库**，所有适配逻辑均为针对gfx936微架构的原创调优。
-> **AI 辅助说明**:AI 用于采样 profile 与插桩、校验与代码审查。
+> **将生产级大语言模型推理引入本土加速器** —— 在 Hygon DCU gfx936（非 CUDA、ROCm 系列架构）上的完整适配及内核级优化记录，实测 **输入长度分段的吞吐量提升 60% ~ 163%**。  
+> 终稿说明文档见 `优化记录/基于国产加速卡的千问大模型推理服务优化说明文档.md`  
+> 本项目为个人独立完成（除PyTorch/HIP基础库外），**未使用任何第三方手写高性能算子库**，所有适配逻辑均为针对gfx936微架构的原创调优。  
+> **AI 辅助说明**:AI 用于采样 profile 与插桩、校验与文档记录。  
 
 ## 01. TL;DR — 最终成果
 
@@ -90,12 +90,12 @@ qwen3_dcu_optimize/
 │   ├── 工具脚本/                    profile 插桩/归因脚本(19 个)
 │   └── log/                        启动/错误日志
 ├── profile/                        ★ profile 物证:批3 trace(gz)、pmc 结果、hipkernel 结果、kernel 参数表
-└── docs/                           ← AI 校验工作文档
-    ├── 00_audit_local_vs_final.md  本地代码 ↔ 终稿逐项校验报告(15 项)
-    ├── 01_final_changes_spec.md    终稿改动规格表(行级锚点+代码,双源转录)
-    ├── 02_summary_corrections.md   19 号文档结论勘误(融合=最有价值论证)
-    ├── 03_assets_map.md            原始工作区资产地图与恢复路径
-    └── 04_ocr_crosscheck.txt       截图 OCR 交叉校验底稿
+└── docs/                           ← 面向读者的说明
+    ├── 00_audit_local_vs_final.md  成果总览(30 秒看完)
+    ├── 01_final_changes_spec.md    15 项改动详解(给要复现的人)
+    ├── 02_summary_corrections.md   为什么"算子融合"是最有价值项
+    ├── 03_assets_map.md            仓库导览
+    └── 04_ocr_crosscheck.txt       截图核对底稿(可跳过)
 ```
 
 ## 06. 引用与延伸

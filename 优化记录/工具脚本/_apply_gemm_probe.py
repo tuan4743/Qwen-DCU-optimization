@@ -1,47 +1,57 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""GDN 投影 GEMM 探针 patch(一次性,容器内运行)。
+"""One-shot patch: inject GEMM record_function probe stubs into a model file.
 
-把 `_gemm_probe.py` 的 record_function 标注桩注入
-`qwen3_next.py:Qwen3NextGatedDeltaNet.forward`(line 634)的三个投影 GEMM 调用点。
+Purpose
+-------
+Wrap the three projection GEMM call sites of
+``Qwen3NextGatedDeltaNet.forward`` (e.g. qwen3_next.py) with the
+``_gemm_probe.py`` record_function labels, so the offline parser
+(_parse_gemm_probe.py) can attribute GPU kernels to each projection.
 
-桩点(forward 内,line 650/651/689):
-    projected_states_qkvz, _ = self.in_proj_qkvz(hidden_states)        # line 650
-    projected_states_ba, _ = self.in_proj_ba(hidden_states)            # line 651
-    ...
-    output[:num_tokens], _ = self.out_proj(core_attn_out)              # line 689
+Probe sites (inside forward):
+    projected_states_qkvz, _ = self.in_proj_qkvz(hidden_states)
+    projected_states_ba,   _ = self.in_proj_ba(hidden_states)
+    output[:num_tokens],   _ = self.out_proj(core_attn_out)
 
-注入后(forward_native / cudagraph replay 都会过 forward):
+After injection (both forward_native and cudagraph replay call forward):
     from gemm_probe import label_in_proj_qkvz
     with label_in_proj_qkvz():
         projected_states_qkvz, _ = self.in_proj_qkvz(hidden_states)
-    ...
 
-Idempotent: 已注入则跳过(检测 `GEMM_PROBE::` 标记)。
+Idempotent: skips if the ``GEMM_PROBE::`` marker is already present.
 
-调用方: 容器内 `python _apply_gemm_probe.py`(gemm_probe.py 需在 PYTHONPATH)。
-影响 API: qwen3_next.py 的 Qwen3NextGatedDeltaNet.forward。
-数据产物: 无独立文件,label 进 torch profiler trace(user_annotation 事件)。
+Usage
+-----
+    python _apply_gemm_probe.py        # inside the container, gemm_probe on PYTHONPATH
+
+Generalization notes
+--------------------
+- Parameterize: change ``TARGET`` (the file to patch) and the three
+  OLD/NEW anchor pairs below for any model file / any operator; the pattern
+  (exact-line anchor + marker idempotency + ast.parse check) is generic.
+- Anchor matching is exact on source text (8-space indent here); adjust
+  whitespace for other files. Verify with ``ast.parse`` before shipping.
 """
 import sys
 
-P = "/public/home/xdzs2026_c150/zya/vllm_cscc/vllm/model_executor/models/qwen3_next.py"
+TARGET = "/public/home/xdzs2026_c150/zya/vllm_cscc/vllm/model_executor/models/qwen3_next.py"
+P = TARGET
 s = open(P, encoding="utf-8").read()
 
 PROBE_MARK = "GEMM_PROBE::"
 
-# ---------- Step 0: 幂等检查 ----------
+# ---------- Step 0: idempotency check ----------
 if PROBE_MARK in s:
     print("gemm_probe already applied, skip.")
     sys.exit(0)
 
-# ---------- Step 1: 三个投影 GEMM 调用点逐个包裹 ----------
-# 注意: 用原始行内容做精确匹配,缩进与源码一致(8 空格)。
+# ---------- Step 1: wrap the three projection GEMM call sites ----------
+# NOTE: match on the exact original line text; indentation must match source (8 spaces).
 
-# 1.1 in_proj_qkvz (line 650)
+# 1.1 in_proj_qkvz
 QKVZ_OLD = "        projected_states_qkvz, _ = self.in_proj_qkvz(hidden_states)\n"
 QKVZ_NEW = (
-    "        # --- gemm_probe: 包住 in_proj_qkvz 投影 GEMM ---\n"
+    "        # --- gemm_probe: wrap in_proj_qkvz projection GEMM ---\n"
     "        from gemm_probe import label_in_proj_qkvz\n"
     "        with label_in_proj_qkvz():\n"
     "            projected_states_qkvz, _ = self.in_proj_qkvz(hidden_states)\n"
@@ -53,10 +63,10 @@ if QKVZ_OLD not in s:
 s = s.replace(QKVZ_OLD, QKVZ_NEW, 1)
 print("Wrapped in_proj_qkvz with label_in_proj_qkvz().")
 
-# 1.2 in_proj_ba (line 651)
+# 1.2 in_proj_ba
 BA_OLD = "        projected_states_ba, _ = self.in_proj_ba(hidden_states)\n"
 BA_NEW = (
-    "        # --- gemm_probe: 包住 in_proj_ba 投影 GEMM ---\n"
+    "        # --- gemm_probe: wrap in_proj_ba projection GEMM ---\n"
     "        from gemm_probe import label_in_proj_ba\n"
     "        with label_in_proj_ba():\n"
     "            projected_states_ba, _ = self.in_proj_ba(hidden_states)\n"
@@ -68,10 +78,10 @@ if BA_OLD not in s:
 s = s.replace(BA_OLD, BA_NEW, 1)
 print("Wrapped in_proj_ba with label_in_proj_ba().")
 
-# 1.3 out_proj (line 689)
+# 1.3 out_proj
 OUT_OLD = "        output[:num_tokens], _ = self.out_proj(core_attn_out)\n"
 OUT_NEW = (
-    "        # --- gemm_probe: 包住 out_proj 投影 GEMM ---\n"
+    "        # --- gemm_probe: wrap out_proj projection GEMM ---\n"
     "        from gemm_probe import label_out_proj\n"
     "        with label_out_proj():\n"
     "            output[:num_tokens], _ = self.out_proj(core_attn_out)\n"
@@ -85,7 +95,7 @@ print("Wrapped out_proj with label_out_proj().")
 
 open(P, "w", encoding="utf-8").write(s)
 
-# 语法校验
+# syntax check
 import ast
 try:
     ast.parse(open(P, encoding="utf-8").read())

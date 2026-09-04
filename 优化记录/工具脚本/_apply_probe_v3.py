@@ -2,23 +2,33 @@
 # -*- coding: utf-8 -*-
 """fill_alloc_probe v3 instrumentation patch (one-shot, run inside container).
 
-修正 v2 的关键 bug:
-  v2 用 set_cudagraph_capturing_enabled(False) 作 anchor 插 post_capture 快照,
-  但该字符串在文件里 *第一次出现* 在 profile_cudagraph_memory() (line ~5682),
-  而非 capture_model() (line ~5754)。DCU/ROCm 上 profile_cudagraph_memory 被
-  gpu_worker.py:398 门控掉 (not is_rocm) → post_capture 桩跑不到, 故只有
-  pre_capture (在 capture_model 入口) 出现, post_capture 永不触发。
+Fixes the critical v2 bug:
+  v2 anchored the post_capture snapshot on `set_cudagraph_capturing_enabled(False)`,
+  but that string FIRST occurs in profile_cudagraph_memory() (~line 5682),
+  not in capture_model() (~line 5754). On DCU/ROCm profile_cudagraph_memory
+  is gated off by gpu_worker.py (not is_rocm) -> the post_capture stub never
+  fired, so only pre_capture showed up.
 
-v3 做三件事 (在 v2 已 patch 的源码上叠加, 幂等):
-  1) 把误插在 profile_cudagraph_memory() 里的 post_capture 块删掉, 改插到
-     capture_model() 真正的出口 (return cuda_graph_size 之前, 用更唯一的 anchor).
-  2) 在 execute_model() 末尾加 post_first_req 检查点 (只取一次), 用于确认
-     稳态 serving 期是否仍有 256MB alloc (P0.5).
-  3) begin_lifetime_probe (load_model 末尾) 与 pre_capture (capture_model 入口)
-     已在 v2 正确就位, 不动.
+v3 does three things (idempotent, layered on a v2-patched tree):
+  1) Remove the misplaced post_capture block from profile_cudagraph_memory()
+     and re-insert it at the REAL capture_model() exit (before
+     `return cuda_graph_size`, a more unique anchor).
+  2) Add a post_first_req checkpoint at the end of execute_model() (one-shot)
+     to confirm whether 256MB allocs still occur during steady serving.
+  3) begin_lifetime_probe (load_model tail) and pre_capture (capture_model
+     entry) were placed correctly by v2; left untouched.
 
-调用方: 容器内 `python _apply_probe_v3.py` (PYTHONPATH 含 /public/home/.../zya).
-影响 API: gpu_model_runner.py 的 capture_model() 与 execute_model().
+Usage
+-----
+    python _apply_probe_v3.py     # inside the container, PYTHONPATH has zya/
+
+Generalization notes
+--------------------
+- The lesson generalizes: NEVER anchor on a string that first occurs in a
+  DIFFERENT function. Prefix anchored searches with a def-context probe
+  (see __probe_dcu.py) or verify the occurrence line belongs to the target
+  function before patching.
+- Parameterize TARGET / anchors for other files; ast.parse gate included.
 """
 import sys
 import ast

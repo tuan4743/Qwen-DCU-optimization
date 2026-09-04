@@ -1,4 +1,6 @@
-﻿===== image 5.png =====
+= 底稿提示:本文件是整理终稿代码时的截图 OCR 交叉核对底稿(内容较乱、仅供校对使用),普通读者可跳过。=
+
+===== image 5.png =====
 / * 溽 码 (baseline) #if deftned( __gfx9Øa #deftne HIP GFX9 #endtf #if deftned( __gfx9Øa #deftne HIP GFX9 #endtf #if deftned( __gfx936 目 deftned( __gfx942 目 def tned(__gfx950 目 def tned(__gfx936_ ） / ． 入 [ 还 凵 ， / ． 改 5 h f [ #deftne HIP_DCU_GFX93X #endtf LL 卜 櫚 1 可 过 * ／ 归 约 ， 不 司 靠 mov_dpp /
 
 ===== image 8.png =====

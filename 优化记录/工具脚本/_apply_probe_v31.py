@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""fill_alloc_probe v3.1 cleanup: 把误插在 sample_tokens() 的 post_first_req 桩
-挪到 execute_model() 的 sync return output 之前。
+"""fill_alloc_probe v3.1 cleanup: move the post_first_req stub that landed in
+sample_tokens() to before execute_model()'s sync return output.
 
-v3 的 SYNC_RET_ANCHOR='            return output\n' 第一次出现在 sample_tokens()
-(PP pass-through 路径的早返回), 不是 execute_model 的主 sync 返回. 导致 sync 桩
-进了 sample_tokens. v3.1:
-  - 删掉 sample_tokens() 里那块 (用其紧邻上文 'output.kv_connector_output = ...' 定位).
-  - 改用 execute_model 的 sync anchor ('if not self.use_async_scheduling:\n            return output')
-    前插桩.
+v3's SYNC_RET_ANCHOR='            return output\n' first occurs in sample_tokens()
+(the PP pass-through early return), not in execute_model's main sync return,
+so the sync stub went into sample_tokens. v3.1:
+  - Deletes the block inside sample_tokens() (located via its preceding line
+    'output.kv_connector_output = ...').
+  - Re-inserts before execute_model's sync anchor
+    ('if not self.use_async_scheduling:\n            return output').
 
-调用方: 容器内 `python /tmp/_apply_probe_v31.py`
-影响 API: gpu_model_runner.py 的 execute_model() 与 sample_tokens() (仅挪桩, 无语义改).
-数据 schema: 仅编辑磁盘文本文件, ast.parse 校验. 无新数据结构.
-用户原文指令: "我的工作区是/public/home/xdzs2026_c150/zya,其中的vllm_cscc是可以修改的.
-修改之后,python setup.py bdist_wheel编译并使用pip install --force-reinstall --no-deps
-dist/vllm-*.whl覆盖安装"
+Usage
+-----
+    python /tmp/_apply_probe_v31.py     # inside the container
+
+Generalization notes
+--------------------
+- Same general lesson as v3: anchor on a UNIQUE context (preceding line +
+  the unless-branch anchor), never a bare string that may occur elsewhere.
+- Edits the target file in place; ast.parse gate included. Parameterize
+  TARGET for other trees.
 """
 import sys
 import ast

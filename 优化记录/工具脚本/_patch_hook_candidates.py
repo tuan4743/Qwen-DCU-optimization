@@ -1,9 +1,28 @@
 #!/usr/bin/env python3
 """Reorder _RUNNER_CANDIDATES so V1 (gpu_model_runner) is probed first,
-and log which runner module actually got wrapped."""
+and log which runner module actually got wrapped.
+
+Purpose
+-------
+P0-1 fix: with use_v2_model_runner=False (default), the V1 runner class
+(gpu_model_runner.py) is instantiated; probing gpu.model_runner (V2) first
+made the wrap land on the V2 class while V1's capture_model ran unwrapped
+(0 ENTERED events). Probe V1 first.
+
+Usage
+-----
+    python _patch_hook_candidates.py     # inside the container
+
+Generalization notes
+--------------------
+- TARGET = the installed fill_capture_hook.py; edit the candidate tuple if
+  your vLLM version has other runner module paths.
+- Idempotency marker is a distinctive comment line; asserted unique.
+"""
 import sys
 
-p = "/usr/local/lib/python3.10/dist-packages/vllm/fill_capture_hook.py"
+TARGET = "/usr/local/lib/python3.10/dist-packages/vllm/fill_capture_hook.py"
+p = TARGET
 s = open(p).read()
 
 old = (

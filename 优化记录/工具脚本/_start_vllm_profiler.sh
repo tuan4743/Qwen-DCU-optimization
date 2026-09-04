@@ -1,9 +1,27 @@
 #!/usr/bin/env bash
+# Launcher for a profiler-enabled vLLM OpenAI server on a domestic accelerator.
+#
+# Purpose: start the API server with the torch profiler routes mounted
+# (--profiler-config so /start_profile + /stop_profile work), keep Triton
+# autotune cache persistent, and tee all output (including EngineCore child
+# prints) into a log file.
+#
+# Usage:
+#   MODEL_DIR=<model dir> PORT=<port> python-vllm-launcher:
+#       MODEL_DIR="$(pwd)/Qwen3.5-27B" ./_start_vllm_profiler.sh
+#
+# Generalization notes (all knobs are env-overridable):
+#   MODEL_DIR     model checkpoint path (default: ../Qwen3.5-27B)
+#   PORT          server port (default 8001)
+#   TRITON_CACHE_AUTOTUNING/CACHE_DIR  Triton autotune persistence
+#   ZYA_HOME / PYTHONPATH              probe module search path
+# Keep --dtype bfloat16 / --tensor-parallel-size <N> / --gpu-memory-utilization
+# adjusted for your card and model.
 set -u
 set -o pipefail
 
-# 模型路径改为工作区下的真实路径（禁止使用 /root）
-# --- 保证 EngineCore 子进程能 import fill_alloc_probe (zya/ 在 path) ---
+# Model path: use the real workspace path (never /root)
+# --- make sure EngineCore children can import fill_alloc_probe (zya/ on path) ---
 export PYTHONPATH="/public/home/xdzs2026_c150/zya:/usr/local/:${PYTHONPATH}"
 export ZYA_HOME="/public/home/xdzs2026_c150/zya"
 # --- Triton autotune cache 持久化(P1 候选1:治本减次)---

@@ -120,6 +120,8 @@
   2. **FFN GEMM 仅 1.50%、FullAttn 0.26%、Sampling 0.03%** —— cudagraph ON 下 attention/FFN/sampling 同样非 GPU 瓶颈,与 eager 一致。
   3. **关键新发现:cudagraph ON 下 decode step ≈ 1.0ms,但 baseline mean_tpot=69.8ms → step 之间有 ~70× 非单步开销**。即 cudagraph 已把"step 内部"开销压到极低(1ms),**端到端 tpot 瓶颈完全在"step 之间"**(streaming 返回往返 / 跨步调度间隙 / 等待),GPU kernel 不再是端到端瓶颈。这把 §核心结论3 的"28–30× gap 来自 CPU overhead"细化钉死:**cudagraph 消除的是 step 内调度(2.4→1.0ms),但 step 间开销(~69ms)独立存在,cudagraph 管不到 —— 优化重心应转向 step 间(见 §P2 CPU/调度 overhead 调研)。**
 
+> ⛔ **【勘误 2026-09】本条(第 3 条)已被本节顶部推翻块(2026-07-09 晚 duty cycle 97.3%)整体推翻**:1.00ms 是**同一 token 内相邻层(kernel)间隔**,不是跨 token 间隔;窗口内 118 token × 67.95ms/token ≈ tpot 69.8ms,端到端瓶颈 = **step 内部 64 层 GPU kernel 串行**,不存在"~70× step 间非单步开销"。第 1/2 条(GDN 主导、FFN/FullAttn 非 GPU 瓶颈)不受影响,仍然成立。
+
 ### P2 — decode 优化点定位
 
 ### P2 — CPU/调度 overhead 调研(2026-07-09,仅设计/调研阶段)

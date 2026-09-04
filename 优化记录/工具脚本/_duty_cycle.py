@@ -1,17 +1,32 @@
 #!/usr/bin/env python3
-"""P2 占空比分析: 用批3 chrome trace 的 kernel ts 序列, 量化 GPU kernel 占空比 (duty cycle)
-   与 step 间间隙, 坐实 "step 内 1ms 但 tpot 69.8ms" 的非单步开销来源。
+"""Duty-cycle analysis for GPU kernel streams from a Chrome trace.
 
-思路:
-- GPU kernel 事件 cat="kernel", ph="X", 有 ts(us)/dur(us)。
-- 占空比 = Σ kernel dur / 窗口 span (最后一个 kernel 结束 - 第一个 kernel 开始)。
-  · 若 ≈ 100% -> kernel 占满窗口, step 间无间隙 (矛盾 step=1ms/tpot=69.8ms)。
-  · 若 << 100% -> step 间有大段 GPU 空闲, 坐实来源 H (streaming 往返)。
-- 进一步: 按 GPU stream timeline 把 kernel 按时间排序, 计算相邻 kernel 间隙分布,
-  分离 "step 内多 kernel 紧凑 (<5ms)" 与 "step 间大间隙 (>5ms)" 两段。
+Purpose
+-------
+Quantify how continuously the GPU is busy (kernel duty cycle) and separate
+"tight intra-step kernel gaps" from "large inter-step gaps". This answers
+questions like: *is the pipeline saturated inside a step, or is GPU idle
+between steps?* (Used to disprove the "step is 1ms but TPOT is 69ms => huge
+non-step overhead" hypothesis: the 1ms gap was *layer-to-layer*, and duty
+cycle turned out to be ~97%, proving kernels themselves fill the TPOT.)
 
-用法:
-  python _duty_cycle.py <trace.json.gz> [--gap-threshold-us 5000]
+Input
+-----
+A torch profiler Chrome trace (JSON or JSON.GZ), e.g. the output of
+``torch.profiler.export_chrome_trace`` on any GPU platform.
+
+Usage
+-----
+    python _duty_cycle.py <trace.json[.gz]> [--gap-threshold-us 5000]
+
+Generalization notes
+--------------------
+- Works with any Chrome trace: only events with ph="X" and a GPU-ish category
+  (kernel/gpu/gpu_memcpy/gpu_memset) are consumed; everything is generic.
+- ``--gap-threshold-us`` splits "step-internal tight" from "step-external
+  big" gaps; tune it to your model's expected per-step kernel time.
+- The busiest (pid, tid) timeline is analyzed since it carries the
+  representative work stream (e.g. the compute stream of one GPU).
 """
 import json, sys, gzip, argparse
 from collections import defaultdict
@@ -32,7 +47,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("trace")
     ap.add_argument("--gap-threshold-us", type=int, default=5000,
-                    help="gap>=此值视为 step 间大间隙 (default 5ms=5000us)")
+                    help="gaps >= this many us are counted as inter-step big gaps (default 5000)")
     args = ap.parse_args()
 
     events = load_events(args.trace)

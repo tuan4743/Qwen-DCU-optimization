@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
-"""P2 占空比分析 + idle 时间分布(质疑1 复核版)。
+"""Duty-cycle analysis v2: idle *position* distribution + periodicity check.
 
-质疑1: 8s 窗口 duty 97.3% 是否代表全稳态? 8s 是 "buffer 2s -> 抓 8s" 截取的,
-       偏好稳态中段, 天然避开请求边界 idle。
-       复核要点: 不只看 duty 平均数, 要看 idle 在时间轴上的 *位置分布* ——
-       是否在稳态中段周期性出现(如 GC / KV 整理 / 偶发 re-autotune),
-       还是只集中在首尾边界。
+Purpose
+-------
+The v1 duty-cycle number alone can be biased by how the trace window was
+chosen (e.g. "buffer 2s -> grab 8s" prefers the steady-state middle and
+hides boundary idle). v2 answers *where* the idle sits:
+  1. Extract idle segments on the busiest timeline (keeps their position).
+  2. Bucket idle along the timeline -> is idle uniformly spread or clustered?
+  3. Idle-size histogram (<1ms / 1-5ms / 5-20ms / 20-50ms / >50ms).
+  4. Periodicity check: are big idle segments (>=10ms) evenly spaced?
+  5. head/mid/tail 10/80/10% window idle comparison (cuts off bias).
 
-本脚本在 _duty_cycle.py 基础上增加:
-  1. idle 段提取(busiest timeline 相邻 kernel 间的 gap, 按 ts 排序保留位置)。
-  2. idle 段按时间轴分桶(把窗口等分 N 段, 每段 idle 占比), 看 idle 是否均匀分布
-     还是在某段时间聚集 -> 排除/坐实"中段周期性 idle"。
-  3. idle 段大小直方图(<1ms / 1-5ms / 5-20ms / 20-50ms / >50ms 各多少个、共多少 us)。
-  4. 周期性检测: 大 idle 段(>=10ms)之间的时间间隔是否近似等距(周期性信号)。
+Usage
+-----
+    python _duty_cycle_v2.py <trace.json[.gz]> [--gap-threshold-us 5000] [--bins 20]
 
-用法:
-  python _duty_cycle_v2.py <trace.json.gz> [--gap-threshold-us 5000] [--bins 20]
+Generalization notes
+--------------------
+- Fully generic over any Chrome trace (same event filter as _duty_cycle.py).
+- ``--bins`` controls the number of timeline buckets; increase for long
+  traces. Big-idle threshold (10ms) is a constant near the top of main();
+  scale it to your layer/step time.
 """
 import json, sys, gzip, argparse
 from collections import defaultdict
@@ -36,7 +42,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("trace")
     ap.add_argument("--gap-threshold-us", type=int, default=5000)
-    ap.add_argument("--bins", type=int, default=20, help="窗口等分桶数, 看 idle 位置分布")
+    ap.add_argument("--bins", type=int, default=20, help="number of timeline buckets for idle position distribution")
     args = ap.parse_args()
 
     events = load_events(args.trace)
@@ -83,8 +89,8 @@ def main():
     print("  kernel dur   : %.3f s" % (busy_total/1e6))
     print("  duty cycle   : %.2f %%\n" % (busy_total/bspan*100))
 
-    # --- idle 段提取: 保留 (在窗口中的位置, idle 时长) ---
-    idle_segments = []  # (rel_us, gap_us)  rel = idle 起点相对窗口起点
+    # --- idle segments: keep (position in window, gap duration) ---
+    idle_segments = []  # (rel_us, gap_us)  rel = idle start relative to window start
     for i in range(len(bk_sorted) - 1):
         cur_end = bk_sorted[i][0] + bk_sorted[i][1]
         nxt_start = bk_sorted[i + 1][0]
@@ -121,7 +127,7 @@ def main():
             print("  -> %d inter-step big gaps, total %.3f s, avg %.2f ms/gap\n"
                   % (len(big), sum(big)/1e6, sum(big)/len(big)/1e3))
 
-        # === 新增1: idle 段大小直方图 ===
+        # === 1: idle gap size histogram ===
         print("=== idle gap size histogram ===")
         buckets = [(0, 1000, "<1ms"), (1000, 5000, "1-5ms"), (5000, 20000, "5-20ms"),
                    (20000, 50000, "20-50ms"), (50000, 100000, "50-100ms"), (100000, float('inf'), ">100ms")]
@@ -130,51 +136,48 @@ def main():
             print("  %-10s : %5d gaps, total %.3f s" % (label, len(cnt), sum(cnt)/1e6))
         print()
 
-        # === 新增2: idle 在时间轴上的位置分布(等分桶, 每桶 idle 占比) ===
+        # === 2: idle position distribution along timeline (even buckets) ===
         nbins = args.bins
         bin_us = bspan / nbins
         bin_idle = [0.0] * nbins
-        bin_span = [0.0] * nbins
         for rel, g in idle_segments:
             idx = min(int(rel / bin_us), nbins - 1)
             bin_idle[idx] += g
-        for i in range(nbins):
-            bin_span[i] = bin_us
         print("=== idle position distribution along timeline (%d bins, each %.1f ms) ===" % (nbins, bin_us/1e3))
-        print("  (bin_idx : idle%%  -> 看是否某段聚集)")
+        print("  (bin_idx : idle%%  ->  check for clustering)")
         for i in range(nbins):
-            pct = bin_idle[i] / bin_span[i] * 100 if bin_span[i] else 0
+            pct = bin_idle[i] / bin_us * 100
             bar = "#" * int(pct / 2)
             print("  bin%2d [%5.1f-%5.1f ms] : %5.1f%%  %s" % (i, i*bin_us/1e3, (i+1)*bin_us/1e3, pct, bar))
         print()
 
-        # === 新增3: 大 idle 段(>=10ms) 周期性检测 ===
+        # === 3: big idle (>=10ms) periodicity check ===
         BIG_THR = 10000  # 10ms
         big_rel = sorted([(rel, g) for rel, g in idle_segments if g >= BIG_THR])
         print("=== big idle (>=10ms) periodicity check (n=%d) ===" % len(big_rel))
         if len(big_rel) >= 2:
-            print("  big idle 发生时刻 (相对窗口起点, ms):")
+            print("  big idle timestamps (relative to window start, ms):")
             for rel, g in big_rel[:30]:
                 print("    +%.1f ms  (idle %.2f ms)" % (rel/1e3, g/1e3))
             intervals = [big_rel[i+1][0] - big_rel[i][0] for i in range(len(big_rel)-1)]
             intervals_sorted = sorted(intervals)
             imed = intervals_sorted[len(intervals_sorted)//2]
-            print("  big-idle 间隔: median %.1f ms, min %.1f ms, max %.1f ms (n=%d)"
+            print("  big-idle intervals: median %.1f ms, min %.1f ms, max %.1f ms (n=%d)"
                   % (imed/1e3, intervals_sorted[0]/1e3, intervals_sorted[-1]/1e3, len(intervals)))
-            # 等距判定: 若间隔方差小 -> 周期性; 若集中在首尾 -> 边界 idle
+            # equidistance check: low variance => periodic; clustered at edges => boundary idle
             if len(big_rel) >= 4:
                 import statistics
                 stdev = statistics.pstdev(intervals)
                 mean = statistics.mean(intervals)
                 cv = stdev / mean if mean else 0
-                print("  间隔变异系数 CV=%.3f (CV<0.2 -> 强周期性; CV>0.5 -> 无周期/聚集首尾)" % cv)
+                print("  interval CV=%.3f (CV<0.2 => strongly periodic; CV>0.5 => no period / edge-clustered)" % cv)
         elif len(big_rel) == 1:
-            print("  仅 1 个大 idle (>=10ms) 在 +%.1f ms, 无周期性可言" % (big_rel[0][0]/1e3))
+            print("  only 1 big idle (>=10ms) at +%.1f ms, no periodicity to speak of" % (big_rel[0][0]/1e3))
         else:
-            print("  无 >=10ms 的 idle 段 -> 稳态全程无大空闲, 质疑1 不成立(占空比代表稳态)")
+            print("  no >=10ms idle -> steady state fully busy; v1 duty number is representative")
         print()
 
-        # === 新增4: 首尾 10% 窗口 vs 中段 80% 窗口的 idle 占比对比 ===
+        # === 4: head/mid/tail 10/80/10% idle comparison (cut-off bias) ===
         head_end = bspan * 0.10
         tail_start = bspan * 0.90
         head_idle = sum(g for rel, g in idle_segments if rel < head_end)
@@ -183,11 +186,11 @@ def main():
         head_span = head_end
         mid_span = tail_start - head_end
         tail_span = bspan - tail_start
-        print("=== head/mid/tail idle comparison (排除截取偏置) ===")
+        print("=== head/mid/tail idle comparison (cut-off bias check) ===")
         print("  head 10%% (%.1f ms): idle %.3f s (%.1f%%)" % (head_span/1e3, head_idle/1e6, head_idle/head_span*100 if head_span else 0))
         print("  mid  80%% (%.1f ms): idle %.3f s (%.1f%%)" % (mid_span/1e3, mid_idle/1e6, mid_idle/mid_span*100 if mid_span else 0))
         print("  tail 10%% (%.1f ms): idle %.3f s (%.1f%%)" % (tail_span/1e3, tail_idle/1e6, tail_idle/tail_span*100 if tail_span else 0))
-        print("  -> 若 mid 80%% idle 仍 <3%%, 则稳态中段满载, 质疑1 不成立")
+        print("  -> if mid 80%% idle is still <3%%, steady state is saturated; cut-off bias rejected")
 
 
 if __name__ == "__main__":

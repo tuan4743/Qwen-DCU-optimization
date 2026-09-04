@@ -1,62 +1,34 @@
-# 03 · 工作区资产地图与恢复路径
+# 03 · 仓库导览:目录与用途
 
-> 项目原始工作区 = `vllm_optimize_data/`(09-04 从远端/评测环境组装拷贝,mtime 保留原时间)。
-> 本文件是"哪个目录有什么、哪些要保留、哪些是噪音"的总地图。
+> 一句话:本仓库是"最终成果 + 全程记录"的合集——想要结论看根目录 README,想要过程看 `优化记录/`,想要代码对照看 `vllm_final/` 与 `vllm_origin/`。
 
-```
-deep-workspace/
-├── memory/MEMORY.md                       持久记忆(本会话已更新)
-├── qwen3_dcu_optimize/                    ★ 本项目交付(本目录)
-└── vllm_optimize_data/
-    ├── vllm_cscc/                         vLLM v0.18.1+das.dtk2604 fork 源码树(权威基线)
-    │   ├── vllm/                          Python 包(本地=07-13 快照,仅 3 处真实改动)
-    │   ├── csrc/                          C++ 扩展(06-20 基线;无 gfx936 宏)
-    │   ├── dist/vllm-0.18.1+das.dtk2604-….whl   06-20 基线 wheel(非终稿)
-    │   ├── build/lib.linux-x86_64-cpython-310/  06-20 构建镜像(=wheel 同源)
-    │   └── build/…CMakeCache              GPU_TARGETS=gfx906;926;928;936;938 证据
-    ├── tasks/
-    │   ├── README.md                      内部文档总索引(07-12 停更,本会话已补 15-19/终稿条目)
-    │   ├── 01~19_*.md                     内部任务文档(分析/实验/算子开发/集成失败记录)
-    │   ├── 基于国产加速卡的千问大模型推理服务优化说明文档.md   ★ 比赛终稿(唯一最终版权威)
-    │   └── 图片和附件/                     ★ 40 张截图(终稿代码对比+效果图+指标图)
-    ├── tools/                             profile/插桩/归因脚本(fill_capture_hook、_apply_*, _parse_*, 等 19 个)
-    ├── profile/                           baseline profile(dump、pmc、vector_kernel_params.csv 等)
-    ├── profile_traces/                    rank0.*.pt.trace.json.gz(批1-批3 trace)
-    ├── log/                               启动日志/ERROR/历史 dump(06-24~28)
-    ├── model_config/                      config.json + 模型官方 README(92KB)
-    ├── importance/提供的数据.txt           官方给定环境/限制/基线数据(16-32K=5.38 口径)
-    ├── dcu_profile_tool/                  PMC 监控工具(device_manager/monitor/monitor_performance)
-    ├── deepgemm-main/                     光合社区 DeepGEMM(适配 BF16 的 DCU 版,算子基线用)
-    └── _baseline_decode/                  api_server/model_runner/qwen3_next 早期基线副本(对照用)
-```
+## 目录总览
 
-## 关键取舍
-
-| 资产 | 价值 | 保留建议 |
+| 目录/文件 | 里面是什么 | 给谁看 |
 |---|---|---|
-| `tasks/01-19` | 方法论+踩坑(19 号文档含全部算子开发经验) | 保留;19 已加勘误标注 |
-| 说明文档+截图 | **唯一终稿代码证据** | 保留;建议连同本项目一起备份(截图已补回) |
-| `vllm_cscc/vllm`+`csrc` | 恢复基线与 3 处真实改动 | 保留;**恢复时按 `docs/01` 规格改,勿用当前树当终稿** |
-| `vllm_cscc/dist`、`build/` | 基线产物/证据 | 占空间大,可留作证据(CMakeCache)或删除后按需重建 |
-| `tools/`(19 个脚本) | 插桩/归因方法论 | 保留,已收录进 README 附件说明 |
-| `profile*`、`log/`、`model_config/`、`importance/` | 原始数据/官方输入 | 保留 |
-| `deepgemm-main/`、`dcu_profile_tool/` | 基线/工具链 | 按需保留(与终稿无直接关系) |
-| `_baseline_decode/` | 早期副本 | 可删(与 06-20 树同源) |
+| `README.md` | 门面:成绩、硬件与适配坑、五轮汇总 | 所有人(先看这个) |
+| `最终优化报告.md` | 完整故事:背景、基线、五轮细节、经验与风险 | 想深入了解的人 |
+| `vllm_final/` | **最终修改代码**(12 个文件,相对 vllm_origin 的差异就是全部改动) | 复现/集成的人 |
+| `vllm_origin/` | 修改前基线(同 12 文件,来自 fork 基线) | 对照用 |
+| `vllm_final/README_变更清单.md` | 每个文件改了什么、依据、注意事项 | 复现的人 |
+| `优化记录/` | 过程全记录:01-19 任务文档 + 终稿说明文档 + 40 张截图 + 工具脚本 + 日志 | 想复盘的人(按时间顺序,长) |
+| `profile/` | 性能画像物证:批3 trace(gz)、pmc 结果、hipkernel 结果、kernel 参数表 | 怀疑性能数字的人 |
+| `docs/` | 本目录:成果总览 / 改动详解 / 融合说明 / 导览 / 底稿 | 所有人 |
 
-## 恢复路径(有机器时)
+## 几个高频问题
 
-1. **基线**:`vllm_cscc` + `dist` wheel 装入 DTK 26.04 容器(python3.10 / torch2.10 / vllm 0.18.1+das.dtk2604),模型 `Qwen3.5-27B`(锁定,不可改);评测口径:并发=1、RPS=1.0、每段 50 成功请求、长度段 4-8K/8-16K/16-32K。
-2. **顺序**(每步打包 A/B,先对比段序再叠加):
-   - 0) 纯基线 wheel 复现 12.20/8.81/4.64(注意 16-32K 用 4.64 还是官方 5.38 口径的确认);
-   - 1) 1.1b csrc 宏 → rebuild wheel(必须先,否则 wvSplitK 空壳/assert)→ 1.1a 路由;
-   - 2) 1.2→1.3→1.4(与 2.1 一起评估);
-   - 3) 2.1+2.2 → 3.1+3.2 → 4.1+4.2+4.3;
-   - 4) 5.1+5.2(5.3 默认关,最后);
-   - 5) 终验:与说明文档五轮数字逐轮对表,记录差异,优先核对 R1 16-32K(3.64<4.64 异常)。
-3. **正确性门**:端到端输出一致性 + `ast.parse` 语法校验 + 每轮 profile(TTFT/TPOT/吞吐三指标)后再累加。
-4. **复现工具**:`tools/` 中 `_decode_only_profile.py`(NO_PROXY 已固化)、`_parse_profile_trace.py`(去污染版)、`fill_capture_hook.py` 已在 `06/08/15` 文档中说明使用方法。
+**"我想在别的国产卡上复现,从哪开始?"**
+`docs/01_final_changes_spec.md`(15 处改动的完整对照)→ 按 1.1 → 其余轮次顺序推进;`README.md`「Hardware Setup」里是必须先解决的适配坑清单。
 
-## 结论
+**"最终代码和我手上的 vLLM 怎么合?"**
+差异就 12 个文件:`vllm_final/` 与 `vllm_origin/` 同名对照即可;其中 `csrc/rocm/skinny_gemms.cu` 需要跟着重新编译,其余是 Python 文件(替换即可)。
 
-- 本地唯一能重建"终稿"的路径 = 说明文档截图 + 本交付 `docs/01` 规格表;仓库树仅支持"基线+C1"状态。
-- 不可逆事实:机器/容器已收回,`/public/home/xdzs2026_c150/zya` 与评测容器不可达;任何需要上机验证的决策(如 1.1a 是否让 m=248320 走 LLMM1)只能暂记为"待验证"。
+**"这些成绩是真的吗?"**
+每条数字都有出处:五轮成绩表见说明文档汇总表,原始 trace/PMC 数据在 `profile/`,截图在 `优化记录/图片和附件/`,两边的数字互相咬合可查。
+
+**"早期文档说某方向不对,又看到最终成果里用了它?"**
+以 `docs/02` 的说明为准:早期记录截至 07-13,之后发生的五轮优化未纳入;"融合"在早期文档里指的对象(跨算子单 kernel)与最终落地(权重拼接/瓦片/融核)不同。
+
+## 原始素材位置(本仓库之外)
+
+- 原始工作区 `vllm_optimize_data/`(源码树 vllm_cscc、tasks 01-19、tools、log)保留未动,本仓库的 `优化记录/` 是其中与成果相关的精选副本。

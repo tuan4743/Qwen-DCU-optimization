@@ -1,25 +1,38 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""fill_alloc_probe v2 instrumentation patch (one-shot, run inside container).
+"""One-shot patch: fill_alloc_probe v2 instrumentation (lifetime recording).
 
-v1 在 capture_model 内 begin/end → capture 期快照 exact_256MB=0 (256MB buffer 不是
-capture 期分配). v2 改为全程记录 + 多检查点快照:
-  - begin_lifetime_probe() 插在 load_model() 末尾 (EngineCore 初始化早期, capture/profile 之前)
-  - checkpoint_snapshot(tag) 插在 capture_model 入口 (capture前) 与出口 (capture后)
+Purpose
+-------
+v1 bracketed capture_model with begin/end and saw exact_256MB=0 during
+capture (the target buffer was NOT allocated during capture). v2 records
+from process start with multi-checkpoint snapshots:
+  - begin_lifetime_probe()  inserted at the END of load_model() (early in
+    EngineCore init, before capture/profile),
+  - checkpoint_snapshot(tag) at capture_model entry ('pre_capture') and
+    exit ('post_capture').
 
-Idempotent: safe to run multiple times (先清旧 v1 桩再插 v2 桩, 已插则跳过).
+Idempotent: strips any v1 stubs first, then inserts v2 stubs (skips if
+already present).
 
-调用方: 容器内 `python _apply_probe_v2.py` (经 PYTHONPATH 找到 fill_alloc_probe).
-影响 API: gpu_model_runner.py 的 load_model() 与 capture_model().
-数据产物: /public/home/xdzs2026_c150/zya/logs/fill_alloc_probe_ckpt{N}_{tag}.jsonl
+Usage
+-----
+    python _apply_probe_v2.py     # inside the container, PYTHONPATH has fill_alloc_probe
+
+Generalization notes
+--------------------
+- Parameterize ``TARGET`` (the runner file), the load_model tail anchor and
+  the capture entry/exit anchors for other vLLM versions; the pattern is
+  generic (anchor search + idempotency + ast.parse check).
+- The v1 cleanup section is included so re-runs are safe on legacy trees.
 """
 import sys
 import re as _re
 
-P = "/public/home/xdzs2026_c150/zya/vllm_cscc/vllm/v1/worker/gpu_model_runner.py"
+TARGET = "/public/home/xdzs2026_c150/zya/vllm_cscc/vllm/v1/worker/gpu_model_runner.py"
+P = TARGET
 s = open(P, encoding="utf-8").read()
 
-# ---------- Step 1: 清除所有 v1 桩 ----------
+# ---------- Step 1: strip all v1 stubs ----------
 V1_BEGIN = (
     "        # --- fill_alloc_probe (P0-策略1): 抓 capture 期 256MB int32 分配栈 ---\n"
     "        try:\n"
@@ -51,15 +64,15 @@ if V1_END in s:
 else:
     print("v1 end block not found (already clean?).")
 
-# ---------- Step 2: v2 lifetime begin 插在 load_model() 末尾 ----------
-# load_model() 以 "get_offloader().post_init()" 结束 (紧邻下一个 def _get_eagle3_aux_layers_from_config)
+# ---------- Step 2: insert v2 lifetime begin at the tail of load_model() ----------
+# load_model() ends with "get_offloader().post_init()" (next def is _get_eagle3_aux_layers_from_config)
 LOAD_TAIL_ANCHOR = "        get_offloader().post_init()\n"
 V2_MARKER = "begin_lifetime_probe"
 if V2_MARKER in s:
     print("v2 begin already present, skip insert into load_model.")
 else:
     LIFETIME_BEGIN = (
-        "        # --- fill_alloc_probe v2: 全程记录 begin (EngineCore init 早期) ---\n"
+        "        # --- fill_alloc_probe v2: lifetime recording begin (early EngineCore init) ---\n"
         "        try:\n"
         "            from fill_alloc_probe import begin_lifetime_probe\n"
         "            begin_lifetime_probe()\n"
@@ -74,14 +87,14 @@ else:
         print("ERROR: load_model tail anchor (get_offloader().post_init) not found.", file=sys.stderr)
         sys.exit(1)
 
-# ---------- Step 3: capture_model 入口/出口插快照 ----------
+# ---------- Step 3: capture_model entry/exit snapshots ----------
 entry_marker = "checkpoint_snapshot(tag='pre_capture')"
 if entry_marker in s:
     print("pre_capture snapshot already present, skip.")
 else:
     a = "        # Trigger CUDA graph capture for specific shapes.\n"
     CAP_ENTRY_SNAP = (
-        "        # --- fill_alloc_probe v2: capture 前快照 ---\n"
+        "        # --- fill_alloc_probe v2: snapshot before capture ---\n"
         "        try:\n"
         "            from fill_alloc_probe import checkpoint_snapshot\n"
         "            checkpoint_snapshot(tag='pre_capture')\n"
@@ -101,7 +114,7 @@ if exit_marker in s:
 else:
     a = "        set_cudagraph_capturing_enabled(False)\n"
     CAP_EXIT_SNAP = (
-        "        # --- fill_alloc_probe v2: capture 后快照 ---\n"
+        "        # --- fill_alloc_probe v2: snapshot after capture ---\n"
         "        try:\n"
         "            from fill_alloc_probe import checkpoint_snapshot\n"
         "            checkpoint_snapshot(tag='post_capture')\n"
@@ -117,7 +130,7 @@ else:
 
 open(P, "w", encoding="utf-8").write(s)
 
-# 语法校验
+# syntax check
 import ast
 try:
     ast.parse(open(P, encoding="utf-8").read())
