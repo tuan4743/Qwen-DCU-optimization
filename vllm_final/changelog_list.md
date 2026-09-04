@@ -1,8 +1,8 @@
 # 最终修改版 · 变更清单与还原说明
 
-> 本目录 = 说明文档五轮优化后的**最终修改版**(按截图+行级证据重建);`../修改前原版/` = 同文件的 fork 基线(修改前)。
+> 本目录 = 说明文档五轮优化后的**最终修改版**(按截图+行级证据重建);`../vllm_origin/` = 同文件的 fork 基线(修改前)。
 > ⚠️ **重建品,非机器原样**:机器已收回,最终代码只能由说明文档截图(视觉转录+OCR 双源)配本地基线重建;未上机验证。每项标注置信度:**【高】**=截图给出了完整代码;**【中】**=截图给出主体、接线/实现细节由推断补全;**【低/骨架】**=截图只有门控或概念描述。
-> 本文档与 `../docs/01_final_changes_spec.md`(逐项规格)配套;存疑点以 `图片和附件/` 原始截图为准。
+> 本文档与 `../docs/01_final_changes_spec.md`(逐项规格)配套;存疑点以 `attachments/` 原始截图为准。
 
 ## 文件清单(全部 12 文件,同路径镜像 vllm 仓库布局)
 
@@ -30,11 +30,11 @@
 | `vllm/v1/attention/backends/utils.py` | 文档 3.2 路径列出,无具体改动描述 | 同上 |
 | `vllm/model_executor/layers/fla/ops/chunk_delta_h.py` | 3.2 只展现了 chunk_o 定参;chunk_delta_h 的 BV/warps 收窄为同类推断 | 恢复期按 chunk_o 风格同步收窄 |
 | `fla/mamba/ops/causal_conv1d.py`(vendored `vllm/model_executor/layers/mamba/ops/causal_conv1d.py`) | 同上,文档路径(可能指 site-packages fla)与 vendored 对应关系需确认 | 恢复期确认 |
-| `vllm/version.py` | 非优化项,是环境级构建 hack(`0.18.1+das.dtk2604`,含自引用 import 瑕疵) | 原版见 `修改前原版/`,建议恢复 upstream 写法 |
+| `vllm/version.py` | 非优化项,是环境级构建 hack(`0.18.1+das.dtk2604`,含自引用 import 瑕疵) | 原版见 `vllm_origin/`,建议恢复 upstream 写法 |
 | `vllm/model_executor/layers/fla/ops/utils.py` | 3.2 的 `FLA_GDN_FIX_BT` env 本地 fork **已有** | 无需改动 |
 | 2.2 非大瓦片分支的 Unified TILE=16/stages=3 | 与 4.1/5.1 互斥未合入 | 恢复期按需补 |
 
 ## 与本地工作树的差异提示
 
 - `vllm_cscc` 工作树 = 07-13 快照:含 C1(`rocm.py` 列表加 gfx936,**终稿已改为独立谓词**)与 C9b(utils.py m≤20000 分支,**终稿已删除**)与 version hack——均已被本"最终修改版"取代;恢复时**不要**基于工作树逐文件叠加,直接以本目录的"原版(基线)+最终修改版"diff 为准。
-- diff 方法:`git diff --no-index 修改前原版/<f> 最终修改版/<f>` 即可得到每文件完整改动。
+- diff 方法:`git diff --no-index vllm_origin/<f> vllm_final/<f>` 即可得到每文件完整改动。
