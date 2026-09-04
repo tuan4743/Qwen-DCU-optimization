@@ -1,0 +1,648 @@
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     0
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1747
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143125(s)
+ processed ALU instructions                91.7414449667(%)
+ performance                               8150.893006(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7469326359(%)
+ L1 cache unit is stalled                  0.3627081180(%)
+ L2 cache write unit is stalled            0.0001555598(%)
+ L2 cache hit rate                         98.461029(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     1
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1774
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143119(s)
+ processed ALU instructions                91.7459996108(%)
+ performance                               8151.230103(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7737443668(%)
+ L1 cache unit is stalled                  0.3629593600(%)
+ L2 cache write unit is stalled            0.0001946923(%)
+ L2 cache hit rate                         98.460696(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     2
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1797
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143150(s)
+ processed ALU instructions                91.7245579743(%)
+ performance                               8149.471799(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8990842452(%)
+ L1 cache unit is stalled                  0.3644690193(%)
+ L2 cache write unit is stalled            0.0000353903(%)
+ L2 cache hit rate                         97.760326(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     3
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1820
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143149(s)
+ processed ALU instructions                91.7255711296(%)
+ performance                               8149.562830(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.9105668273(%)
+ L1 cache unit is stalled                  0.3643116332(%)
+ L2 cache write unit is stalled            0.0001974429(%)
+ L2 cache hit rate                         98.107382(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     4
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1843
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143126(s)
+ processed ALU instructions                91.7404361607(%)
+ performance                               8150.883894(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7722901357(%)
+ L1 cache unit is stalled                  0.3644021694(%)
+ L2 cache write unit is stalled            0.0001993379(%)
+ L2 cache hit rate                         98.432035(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     5
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1866
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143135(s)
+ processed ALU instructions                91.7343000562(%)
+ performance                               8150.337218(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8024096909(%)
+ L1 cache unit is stalled                  0.3646578052(%)
+ L2 cache write unit is stalled            0.0001997903(%)
+ L2 cache hit rate                         98.413811(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     6
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1889
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143141(s)
+ processed ALU instructions                91.7303416320(%)
+ performance                               8149.981862(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7762355499(%)
+ L1 cache unit is stalled                  0.3648228746(%)
+ L2 cache write unit is stalled            0.0001485556(%)
+ L2 cache hit rate                         98.459114(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     7
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1912
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143157(s)
+ processed ALU instructions                91.7212175395(%)
+ performance                               8149.089251(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7851579482(%)
+ L1 cache unit is stalled                  0.3641963235(%)
+ L2 cache write unit is stalled            0.0001578537(%)
+ L2 cache hit rate                         98.460875(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     8
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1935
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143134(s)
+ processed ALU instructions                91.7359179564(%)
+ performance                               8150.382772(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7744941920(%)
+ L1 cache unit is stalled                  0.3641070029(%)
+ L2 cache write unit is stalled            0.0001867536(%)
+ L2 cache hit rate                         98.459803(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     9
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1958
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143133(s)
+ processed ALU instructions                91.7368309610(%)
+ performance                               8150.455659(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8730081170(%)
+ L1 cache unit is stalled                  0.3634365488(%)
+ L2 cache write unit is stalled            0.0001168968(%)
+ L2 cache hit rate                         98.199990(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     10
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      1981
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143153(s)
+ processed ALU instructions                91.7229866028(%)
+ performance                               8149.326062(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7733825150(%)
+ L1 cache unit is stalled                  0.3641562004(%)
+ L2 cache write unit is stalled            0.0001350397(%)
+ L2 cache hit rate                         98.458467(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     11
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2004
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143137(s)
+ processed ALU instructions                91.7332491138(%)
+ performance                               8150.227835(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8220307377(%)
+ L1 cache unit is stalled                  0.3640096723(%)
+ L2 cache write unit is stalled            0.0001085096(%)
+ L2 cache hit rate                         98.417352(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     12
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2027
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143146(s)
+ processed ALU instructions                91.7271088448(%)
+ performance                               8149.699523(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7829228624(%)
+ L1 cache unit is stalled                  0.3638664433(%)
+ L2 cache write unit is stalled            0.0001974462(%)
+ L2 cache hit rate                         98.448472(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     13
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2050
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143135(s)
+ processed ALU instructions                91.7344038701(%)
+ performance                               8150.355440(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8484792050(%)
+ L1 cache unit is stalled                  0.3641146737(%)
+ L2 cache write unit is stalled            0.0000973338(%)
+ L2 cache hit rate                         98.224155(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     14
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2073
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143135(s)
+ processed ALU instructions                91.7342667332(%)
+ performance                               8150.318997(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.9855660739(%)
+ L1 cache unit is stalled                  0.3638152008(%)
+ L2 cache write unit is stalled            0.0001071136(%)
+ L2 cache hit rate                         96.675818(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     15
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2096
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143137(s)
+ processed ALU instructions                91.7341710367(%)
+ performance                               8150.218839(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8520843784(%)
+ L1 cache unit is stalled                  0.3637439750(%)
+ L2 cache write unit is stalled            0.0001881472(%)
+ L2 cache hit rate                         98.315355(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     16
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2119
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143137(s)
+ processed ALU instructions                91.7348242547(%)
+ performance                               8150.237401(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.9573603065(%)
+ L1 cache unit is stalled                  0.3637605366(%)
+ L2 cache write unit is stalled            0.0001038543(%)
+ L2 cache hit rate                         97.702709(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     17
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2142
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143126(s)
+ processed ALU instructions                91.7419743743(%)
+ performance                               8150.875580(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8341160977(%)
+ L1 cache unit is stalled                  0.3641780239(%)
+ L2 cache write unit is stalled            0.0001052596(%)
+ L2 cache hit rate                         98.188098(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     18
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2165
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143151(s)
+ processed ALU instructions                91.7247565886(%)
+ performance                               8149.444871(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8004755305(%)
+ L1 cache unit is stalled                  0.3633723570(%)
+ L2 cache write unit is stalled            0.0002416792(%)
+ L2 cache hit rate                         98.454084(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     19
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2188
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143141(s)
+ processed ALU instructions                91.7317457954(%)
+ performance                               8150.018415(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7807360984(%)
+ L1 cache unit is stalled                  0.3631765098(%)
+ L2 cache write unit is stalled            0.0001876765(%)
+ L2 cache hit rate                         98.458237(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     20
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2211
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143146(s)
+ processed ALU instructions                91.7268850186(%)
+ performance                               8149.708632(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8074222668(%)
+ L1 cache unit is stalled                  0.3637776013(%)
+ L2 cache write unit is stalled            0.0001001199(%)
+ L2 cache hit rate                         98.066967(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     21
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2234
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143134(s)
+ processed ALU instructions                91.7365126677(%)
+ performance                               8150.428383(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8034341235(%)
+ L1 cache unit is stalled                  0.3642251537(%)
+ L2 cache write unit is stalled            0.0001909463(%)
+ L2 cache hit rate                         98.394730(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     22
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2257
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143154(s)
+ processed ALU instructions                91.7219713691(%)
+ performance                               8149.271412(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7990347688(%)
+ L1 cache unit is stalled                  0.3635892002(%)
+ L2 cache write unit is stalled            0.0002053512(%)
+ L2 cache hit rate                         98.452904(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     23
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2280
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143139(s)
+ processed ALU instructions                91.7318444772(%)
+ performance                               8150.118569(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.9101758942(%)
+ L1 cache unit is stalled                  0.3648962033(%)
+ L2 cache write unit is stalled            0.0000791688(%)
+ L2 cache hit rate                         98.054033(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     24
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2303
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143147(s)
+ processed ALU instructions                91.7266641835(%)
+ performance                               8149.663143(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.7653533441(%)
+ L1 cache unit is stalled                  0.3640156738(%)
+ L2 cache write unit is stalled            0.0002346991(%)
+ L2 cache hit rate                         98.414907(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     25
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2326
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143151(s)
+ processed ALU instructions                91.7242030336(%)
+ performance                               8149.444473(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.8357810713(%)
+ L1 cache unit is stalled                  0.3648848406(%)
+ L2 cache write unit is stalled            0.0001904551(%)
+ L2 cache hit rate                         98.369349(%)
+
+kernel-name:"_Z31flash_fwd_kernel_16x64_prefetchI44Flash_fwd_kernel_16x64_prefetch_traits_dim96ILi96ELi128ELi64ELi4EN7cutlass10bfloat16_tELi3ELi96E19Flash_kernel_traitsILi96ELi128ELi64ELi4ES2_EELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0ELb0EEv16Flash_fwd_params"
+ kernel dispatch index                     26
+ gpu id                                    0
+ dispatch queue id                         0
+ dispatch queue index                      2349
+ process id                                25288
+ thread id                                 25288
+ grid size                                 2097152
+ work group size                           256
+ shared memory size                        12288
+ scratch size                              0
+ vgpr count                                164
+ sgpr count                                80
+ signal handle                             0x0
+ kernel time                               0.143163(s)
+ processed ALU instructions                91.7166444300(%)
+ performance                               8148.752331(Gflops)
+ shared memory operation                   939655168
+ shared memory bank conflict               0.0000000000(%)
+ L1 cache unit is active                   62.9037860041(%)
+ L1 cache unit is stalled                  0.3640724107(%)
+ L2 cache write unit is stalled            0.0001075587(%)
+ L2 cache hit rate                         98.133844(%)
+

@@ -1,0 +1,97 @@
+root@worker-0:/***# ./start_vllm_test.sh
+(APIServer pid=355) INFO 06-21 10:51:18 [utils.py:233] non-default args: {'default_chat_template_kwargs': {'enable_thinking': False}, 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_coder', 'port': 8001, 'model': '/***/Qwen3.5-27B', 'trust_remote_code': True, 'dtype': 'bfloat16', 'served_model_name': ['Qwen3.5-27B'], 'reasoning_parser': 'qwen3', 'gpu_memory_utilization': 0.95, 'max_num_batched_tokens': 4096, 'max_num_seqs': 128}
+(APIServer pid=355) The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+(APIServer pid=355) `layer_type_validation` is deprecated and will be removed in v5.20. Use `PreTrainedConfig.validate_layer_type` instead
+(APIServer pid=355) `layer_type_validation` is deprecated and will be removed in v5.20. Use `PreTrainedConfig.validate_layer_type` instead
+(APIServer pid=355) `layer_type_validation` is deprecated and will be removed in v5.20. Use `PreTrainedConfig.validate_layer_type` instead
+(APIServer pid=355) INFO 06-21 10:51:47 [model.py:533] Resolved architecture: Qwen3_5ForConditionalGeneration
+(APIServer pid=355) INFO 06-21 10:51:47 [model.py:1582] Using max model len 262144
+(APIServer pid=355) INFO 06-21 10:51:47 [scheduler.py:231] Chunked prefill is enabled with max_num_batched_tokens=4096.
+(APIServer pid=355) `Qwen2VLImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `Qwen2VLImageProcessor` instead.
+(APIServer pid=355) INFO 06-21 10:51:47 [config.py:212] Setting attention block size to 784 tokens to ensure that attention page size is >= mamba page size.
+(APIServer pid=355) INFO 06-21 10:51:47 [config.py:243] Padding mamba page size by 0.13% to ensure that mamba page size and attention page size are exactly equal.
+(APIServer pid=355) INFO 06-21 10:51:47 [vllm.py:775] Asynchronous scheduling is enabled.
+(APIServer pid=355) The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=446) INFO 06-21 10:52:27 [core.py:103] Initializing a V1 LLM engine (v0.18.1) with config: model='/***/Qwen3.5-27B', speculative_config=None, tokenizer='/***/Qwen3.5-27B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=True, quantization=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='qwen3', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=Qwen3.5-27B, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['+sparse_attn_indexer', 'none'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'compile_sizes': [], 'compile_ranges_endpoints': [4096], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False}, 'max_cudagraph_capture_size': 256, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': True, 'static_all_moe_layers': []}
+(EngineCore pid=446) `Qwen2VLImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `Qwen2VLImageProcessor` instead.
+(EngineCore pid=446) INFO 06-21 10:52:32 [parallel_state.py:1395] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://***.*.**.*:***** backend=nccl
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W0621 **:**:**.******   446 socket.cpp:207] [c10d] The hostname of the client socket cannot be retrieved. err=-3
+(EngineCore pid=446) INFO 06-21 10:52:32 [parallel_state.py:1717] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=446) The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=446) INFO 06-21 10:52:43 [gpu_model_runner.py:4481] Starting to load model /***/Qwen3.5-27B...
+(EngineCore pid=446) INFO 06-21 10:52:43 [rocm.py:556] Using Torch SDPA backend for ViT model.
+(EngineCore pid=446) WARNING 06-21 10:52:43 [activation.py:643] [ROCm] PyTorch's native GELU with tanh approximation is unstable. Falling back to GELU(approximate='none').
+(EngineCore pid=446) INFO 06-21 10:52:43 [mm_encoder_attention.py:230] Using AttentionBackendEnum.TORCH_SDPA for MMEncoderAttention.
+(EngineCore pid=446) INFO 06-21 10:52:43 [qwen3_next.py:198] Using Triton/FLA GDN prefill kernel
+(EngineCore pid=446) INFO 06-21 10:52:43 [rocm.py:496] Using TRITON_ATTN attention backend out of potential backends: ['TRITON_ATTN'].
+(EngineCore pid=446) WARNING 06-21 10:52:44 [compilation.py:1136] Op 'sparse_attn_indexer' not present in model, enabling with '+sparse_attn_indexer' has no effect
+
+EngineCore pid=446) INFO 06-21 11:09:02 [default_loader.py:384] Loading weights took 978.40 seconds
+(EngineCore pid=446) INFO 06-21 11:09:03 [gpu_model_runner.py:4566] Model loading took 51.2 GiB memory and 979.216224 seconds
+(EngineCore pid=446) INFO 06-21 11:09:03 [gpu_model_runner.py:5488] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(EngineCore pid=446) /usr/local/lib/python3.10/dist-packages/vllm/v1/attention/ops/vit_attn_wrappers.py:202: UserWarning: sdpa adopt the new interface of flash-attn (Triggered internally at /home/pytorch/aten/src/ATen/native/transformers/hip/cutlassfa_adapter.h:145.)
+(EngineCore pid=446)   output = F.scaled_dot_product_attention(
+(EngineCore pid=446) INFO 06-21 11:09:28 [backends.py:988] Using cache directory: /root/.cache/vllm/torch_compile_cache/a989df3a82/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=446) INFO 06-21 11:09:28 [backends.py:1048] Dynamo bytecode transform time: 16.36 s
+(EngineCore pid=446) INFO 06-21 11:09:39 [backends.py:371] Cache the graph of compile range (1, 4096) for later use
+(EngineCore pid=446) INFO 06-21 11:10:57 [backends.py:387] Compiling a graph for compile range (1, 4096) takes 88.16 s
+(EngineCore pid=446) INFO 06-21 11:11:03 [decorators.py:627] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/5d3e2b80a6fc734711e44d3705f8252a369911c19d9605118d46ce601d9fd9f8/rank_0_0/model
+(EngineCore pid=446) INFO 06-21 11:11:03 [monitor.py:48] torch.compile took 111.42 s in total
+(EngineCore pid=446) /usr/local/lib/python3.10/dist-packages/vllm/model_executor/layers/fla/ops/utils.py:113: UserWarning: Input tensor shape suggests potential format mismatch: seq_len (16) < num_heads (48). This may indicate the inputs were passed in head-first format [B, H, T, ...] when head_first=False was specified. Please verify your input tensor format matches the expected shape [B, T, H, ...].
+(EngineCore pid=446)   return fn(*contiguous_args, **contiguous_kwargs)
+(EngineCore pid=446) /usr/local/lib/python3.10/dist-packages/vllm/model_executor/layers/fla/ops/utils.py:113: UserWarning: Input tensor shape suggests potential format mismatch: seq_len (32) < num_heads (48). This may indicate the inputs were passed in head-first format [B, H, T, ...] when head_first=False was specified. Please verify your input tensor format matches the expected shape [B, T, H, ...].
+(EngineCore pid=446)   return fn(*contiguous_args, **contiguous_kwargs)
+(EngineCore pid=446) /usr/local/lib/python3.10/dist-packages/vllm/model_executor/layers/fla/ops/utils.py:113: UserWarning: Input tensor shape suggests potential format mismatch: seq_len (16) < num_heads (48). This may indicate the inputs were passed in head-first format [B, H, T, ...] when head_first=False was specified. Please verify your input tensor format matches the expected shape [B, T, H, ...].
+(EngineCore pid=446)   return fn(*contiguous_args, **contiguous_kwargs)
+(EngineCore pid=446) /usr/local/lib/python3.10/dist-packages/vllm/model_executor/layers/fla/ops/utils.py:113: UserWarning: Input tensor shape suggests potential format mismatch: seq_len (32) < num_heads (48). This may indicate the inputs were passed in head-first format [B, H, T, ...] when head_first=False was specified. Please verify your input tensor format matches the expected shape [B, T, H, ...].
+(EngineCore pid=446)   return fn(*contiguous_args, **contiguous_kwargs)
+(EngineCore pid=446) INFO 06-21 11:13:46 [monitor.py:76] Initial profiling/warmup run took 162.77 s
+(EngineCore pid=446) INFO 06-21 11:13:53 [gpu_worker.py:456] Available KV cache memory: 6.44 GiB
+(EngineCore pid=446) INFO 06-21 11:13:53 [kv_cache_utils.py:1316] GPU KV cache size: 25,872 tokens
+(EngineCore pid=446) INFO 06-21 11:13:53 [kv_cache_utils.py:1321] Maximum concurrency for 262,144 tokens per request: 0.40x
+(EngineCore pid=446) WARNING 06-21 11:13:53 [compilation.py:1236] Capping cudagraph capture sizes from max 256 to 128 to fit Mamba cache blocks (134 blocks available). This limits the maximum batch size that can use CUDA graphs. To increase this limit, reduce max_num_seqs or increase available GPU memory.
+Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 19/19 [00:03<00:00,  5.26it/s]
+Capturing CUDA graphs (decode, FULL): 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 19/19 [00:15<00:00,  1.22it/s]
+(EngineCore pid=446) INFO 06-21 11:14:13 [gpu_model_runner.py:5746] Graph capturing finished in 20 secs, took 0.32 GiB
+(EngineCore pid=446) INFO 06-21 11:14:13 [core.py:281] init engine (profile, create kv cache, warmup model) took 310.10 seconds
+(EngineCore pid=446) INFO 06-21 11:14:14 [vllm.py:775] Asynchronous scheduling is enabled.
+(APIServer pid=355) INFO 06-21 11:14:14 [api_server.py:576] Supported tasks: ['generate']
+(APIServer pid=355) INFO 06-21 11:14:14 [parser_manager.py:202] "auto" tool choice has been enabled.
+(APIServer pid=355) WARNING 06-21 11:14:14 [model.py:1376] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 0.6, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=355) INFO 06-21 11:14:14 [parser_manager.py:202] "auto" tool choice has been enabled.
+(APIServer pid=355) INFO 06-21 11:14:14 [parser_manager.py:202] "auto" tool choice has been enabled.
+(APIServer pid=355) INFO 06-21 11:14:16 [hf.py:320] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=355) INFO 06-21 11:14:25 [base.py:216] Multi-modal warmup completed in 8.397s
+(APIServer pid=355) INFO 06-21 11:14:25 [parser_manager.py:202] "auto" tool choice has been enabled.
+(APIServer pid=355) INFO 06-21 11:14:25 [api_server.py:580] Starting vLLM server on http://0.0.0.0:8001
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:37] Available routes are:
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /docs, Methods: HEAD, GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /tokenize, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /detokenize, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /load, Methods: GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /version, Methods: GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /health, Methods: GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /metrics, Methods: GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/models, Methods: GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /ping, Methods: GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /ping, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /invocations, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/responses, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/completions, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/messages, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /inference/v1/generate, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/chat/completions/render, Methods: POST
+(APIServer pid=355) INFO 06-21 11:14:25 [launcher.py:46] Route: /v1/completions/render, Methods: POST
+(APIServer pid=355) INFO:     Started server process [355]
+(APIServer pid=355) INFO:     Waiting for application startup.
+(APIServer pid=355) INFO:     Application startup complete.

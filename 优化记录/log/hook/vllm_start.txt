@@ -1,0 +1,220 @@
+(APIServer pid=23885) INFO 06-28 16:20:53 [utils.py:233] non-default args: {'default_chat_template_kwargs': {'enable_thinking': False}, 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_coder', 'port': 8001, 'model': '../Qwen3.5-27B', 'trust_remote_code': True, 'dtype': 'bfloat16', 'served_model_name': ['Qwen3.5-27B'], 'reasoning_parser': 'qwen3', 'gpu_memory_utilization': 0.95, 'max_num_batched_tokens': 4096, 'max_num_seqs': 128}
+(APIServer pid=23885) WARNING 06-28 16:20:53 [envs.py:1717] Unknown vLLM environment variable detected: VLLM_TRACE_FILL_ALL
+(APIServer pid=23885) WARNING 06-28 16:20:53 [envs.py:1717] Unknown vLLM environment variable detected: VLLM_TRACE_FILL
+(APIServer pid=23885) WARNING 06-28 16:20:53 [envs.py:1717] Unknown vLLM environment variable detected: VLLM_TRACE_FILL_LOG
+(APIServer pid=23885) The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+(APIServer pid=23885) `layer_type_validation` is deprecated and will be removed in v5.20. Use `PreTrainedConfig.validate_layer_type` instead
+(APIServer pid=23885) `layer_type_validation` is deprecated and will be removed in v5.20. Use `PreTrainedConfig.validate_layer_type` instead
+(APIServer pid=23885) `layer_type_validation` is deprecated and will be removed in v5.20. Use `PreTrainedConfig.validate_layer_type` instead
+(APIServer pid=23885) INFO 06-28 16:20:53 [model.py:533] Resolved architecture: Qwen3_5ForConditionalGeneration
+(APIServer pid=23885) INFO 06-28 16:20:53 [model.py:1582] Using max model len 262144
+(APIServer pid=23885) INFO 06-28 16:20:53 [scheduler.py:231] Chunked prefill is enabled with max_num_batched_tokens=4096.
+(APIServer pid=23885) `Qwen2VLImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `Qwen2VLImageProcessor` instead.
+(APIServer pid=23885) INFO 06-28 16:20:53 [config.py:212] Setting attention block size to 784 tokens to ensure that attention page size is >= mamba page size.
+(APIServer pid=23885) INFO 06-28 16:20:53 [config.py:243] Padding mamba page size by 0.13% to ensure that mamba page size and attention page size are exactly equal.
+(APIServer pid=23885) INFO 06-28 16:20:53 [vllm.py:775] Asynchronous scheduling is enabled.
+(APIServer pid=23885) The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[fill_capture_hook] wrapped vllm.v1.worker.gpu.model_runner.GPUModelRunner.capture_model
+[fill_capture_hook] loaded. target dtype=int32 numel=67108864 tol=0.05 log_all=True log_path=/public/home/xdzs2026_c150/zya/logs/fill_trace.log
+(EngineCore pid=23997) INFO 06-28 16:21:31 [core.py:103] Initializing a V1 LLM engine (v0.18.1) with config: model='../Qwen3.5-27B', speculative_config=None, tokenizer='../Qwen3.5-27B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=True, quantization=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='qwen3', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=Qwen3.5-27B, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['+sparse_attn_indexer', 'none'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'compile_sizes': [], 'compile_ranges_endpoints': [4096], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False}, 'max_cudagraph_capture_size': 256, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': True, 'static_all_moe_layers': []}
+(EngineCore pid=23997) `Qwen2VLImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `Qwen2VLImageProcessor` instead.
+(EngineCore pid=23997) INFO 06-28 16:21:34 [parallel_state.py:1395] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://173.0.9.2:54185 backend=nccl
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W0628 16:21:34.301836 23997 socket.cpp:207] [c10d] The hostname of the client socket cannot be retrieved. err=-3
+(EngineCore pid=23997) INFO 06-28 16:21:34 [parallel_state.py:1717] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=23997) The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=23997) INFO 06-28 16:21:44 [gpu_model_runner.py:4481] Starting to load model ../Qwen3.5-27B...
+(EngineCore pid=23997) INFO 06-28 16:21:44 [rocm.py:556] Using Torch SDPA backend for ViT model.
+(EngineCore pid=23997) WARNING 06-28 16:21:44 [activation.py:643] [ROCm] PyTorch's native GELU with tanh approximation is unstable. Falling back to GELU(approximate='none').
+(EngineCore pid=23997) INFO 06-28 16:21:44 [mm_encoder_attention.py:230] Using AttentionBackendEnum.TORCH_SDPA for MMEncoderAttention.
+(EngineCore pid=23997) INFO 06-28 16:21:44 [qwen3_next.py:198] Using Triton/FLA GDN prefill kernel
+(EngineCore pid=23997) INFO 06-28 16:21:44 [rocm.py:496] Using TRITON_ATTN attention backend out of potential backends: ['TRITON_ATTN'].
+(EngineCore pid=23997) WARNING 06-28 16:21:45 [compilation.py:1136] Op 'sparse_attn_indexer' not present in model, enabling with '+sparse_attn_indexer' has no effect
+Loading safetensors checkpoint shards:   0% Completed | 0/11 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:   9% Completed | 1/11 [00:12<02:07, 12.80s/it]
+Loading safetensors checkpoint shards:  18% Completed | 2/11 [00:23<01:43, 11.54s/it]
+Loading safetensors checkpoint shards:  27% Completed | 3/11 [03:41<12:53, 96.70s/it]
+Loading safetensors checkpoint shards:  36% Completed | 4/11 [06:43<15:12, 130.42s/it]
+Loading safetensors checkpoint shards:  45% Completed | 5/11 [09:46<14:55, 149.33s/it]
+Loading safetensors checkpoint shards:  55% Completed | 6/11 [12:51<13:27, 161.59s/it]
+Loading safetensors checkpoint shards:  64% Completed | 7/11 [15:58<11:18, 169.70s/it]
+Loading safetensors checkpoint shards:  73% Completed | 8/11 [16:08<05:56, 118.80s/it]
+Loading safetensors checkpoint shards:  82% Completed | 9/11 [16:17<02:49, 84.60s/it]
+Loading safetensors checkpoint shards:  91% Completed | 10/11 [16:26<01:01, 61.34s/it]
+Loading safetensors checkpoint shards: 100% Completed | 11/11 [16:31<00:00, 44.11s/it]
+Loading safetensors checkpoint shards: 100% Completed | 11/11 [16:31<00:00, 90.16s/it]
+(EngineCore pid=23997) 
+(EngineCore pid=23997) INFO 06-28 16:38:17 [default_loader.py:384] Loading weights took 991.82 seconds
+(EngineCore pid=23997) INFO 06-28 16:38:17 [gpu_model_runner.py:4566] Model loading took 51.2 GiB memory and 992.583533 seconds
+(EngineCore pid=23997) INFO 06-28 16:38:18 [gpu_model_runner.py:5488] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(EngineCore pid=23997) /usr/local/lib/python3.10/dist-packages/vllm/v1/attention/ops/vit_attn_wrappers.py:202: UserWarning: sdpa adopt the new interface of flash-attn (Triggered internally at /home/pytorch/aten/src/ATen/native/transformers/hip/cutlassfa_adapter.h:145.)
+(EngineCore pid=23997)   output = F.scaled_dot_product_attention(
+(EngineCore pid=23997) INFO 06-28 16:38:32 [backends.py:988] Using cache directory: /root/.cache/vllm/torch_compile_cache/bd69309f5d/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=23997) INFO 06-28 16:38:32 [backends.py:1048] Dynamo bytecode transform time: 5.94 s
+(EngineCore pid=23997) INFO 06-28 16:38:38 [backends.py:284] Directly load the compiled graph(s) for compile range (1, 4096) from the cache, took 4.605 s
+(EngineCore pid=23997) INFO 06-28 16:38:38 [monitor.py:48] torch.compile took 11.48 s in total
+(EngineCore pid=23997) INFO 06-28 16:38:38 [decorators.py:296] Directly load AOT compilation from path /root/.cache/vllm/torch_compile_cache/torch_aot_compile/2d763dd018bd304674890e241568776333673a0b7ca3ca6fd4f6cdf4b653b6c5/rank_0_0/model
+(EngineCore pid=23997) /usr/local/lib/python3.10/dist-packages/vllm/model_executor/layers/fla/ops/utils.py:113: UserWarning: Input tensor shape suggests potential format mismatch: seq_len (16) < num_heads (48). This may indicate the inputs were passed in head-first format [B, H, T, ...] when head_first=False was specified. Please verify your input tensor format matches the expected shape [B, T, H, ...].
+(EngineCore pid=23997)   return fn(*contiguous_args, **contiguous_kwargs)
+(EngineCore pid=23997) /usr/local/lib/python3.10/dist-packages/vllm/model_executor/layers/fla/ops/utils.py:113: UserWarning: Input tensor shape suggests potential format mismatch: seq_len (32) < num_heads (48). This may indicate the inputs were passed in head-first format [B, H, T, ...] when head_first=False was specified. Please verify your input tensor format matches the expected shape [B, T, H, ...].
+(EngineCore pid=23997)   return fn(*contiguous_args, **contiguous_kwargs)
+(EngineCore pid=23997) INFO 06-28 16:39:00 [monitor.py:76] Initial profiling/warmup run took 22.18 s
+(EngineCore pid=23997) INFO 06-28 16:39:01 [gpu_worker.py:456] Available KV cache memory: 6.77 GiB
+(EngineCore pid=23997) INFO 06-28 16:39:01 [kv_cache_utils.py:1316] GPU KV cache size: 27,440 tokens
+(EngineCore pid=23997) INFO 06-28 16:39:01 [kv_cache_utils.py:1321] Maximum concurrency for 262,144 tokens per request: 0.42x
+(EngineCore pid=23997) WARNING 06-28 16:39:01 [compilation.py:1236] Capping cudagraph capture sizes from max 256 to 136 to fit Mamba cache blocks (141 blocks available). This limits the maximum batch size that can use CUDA graphs. To increase this limit, reduce max_num_seqs or increase available GPU memory.
+Capturing CUDA graphs (mixed prefill-decode, PIECEWISE): 100%|█████████████████████████████████████████████████████████████████████████| 20/20 [00:03<00:00,  6.20it/s]
+Capturing CUDA graphs (decode, FULL): 100%|████████████████████████████████████████████████████████████████████████████████████████████| 19/19 [00:03<00:00,  5.22it/s]
+(EngineCore pid=23997) INFO 06-28 16:39:08 [gpu_model_runner.py:5746] Graph capturing finished in 8 secs, took 0.33 GiB
+(EngineCore pid=23997) INFO 06-28 16:39:08 [core.py:281] init engine (profile, create kv cache, warmup model) took 51.11 seconds
+(EngineCore pid=23997) INFO 06-28 16:39:09 [vllm.py:775] Asynchronous scheduling is enabled.
+(APIServer pid=23885) INFO 06-28 16:39:09 [api_server.py:577] Supported tasks: ['generate']
+(APIServer pid=23885) INFO 06-28 16:39:09 [parser_manager.py:202] "auto" tool choice has been enabled.
+(APIServer pid=23885) WARNING 06-28 16:39:09 [model.py:1376] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 0.6, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=23885) INFO 06-28 16:39:09 [parser_manager.py:202] "auto" tool choice has been enabled.
+(APIServer pid=23885) INFO 06-28 16:39:09 [parser_manager.py:202] "auto" tool choice has been enabled.
+(APIServer pid=23885) INFO 06-28 16:39:11 [hf.py:320] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=23885) INFO 06-28 16:39:19 [base.py:216] Multi-modal warmup completed in 7.822s
+(APIServer pid=23885) INFO 06-28 16:39:19 [parser_manager.py:202] "auto" tool choice has been enabled.
+(APIServer pid=23885) INFO 06-28 16:39:19 [api_server.py:581] Starting vLLM server on http://0.0.0.0:8001
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:37] Available routes are:
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /docs, Methods: HEAD, GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /tokenize, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /detokenize, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /load, Methods: GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /version, Methods: GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /health, Methods: GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /metrics, Methods: GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/models, Methods: GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /ping, Methods: GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /ping, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /invocations, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/responses, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/completions, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/messages, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /inference/v1/generate, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/chat/completions/render, Methods: POST
+(APIServer pid=23885) INFO 06-28 16:39:19 [launcher.py:46] Route: /v1/completions/render, Methods: POST
+(APIServer pid=23885) INFO:     Started server process [23885]
+(APIServer pid=23885) INFO:     Waiting for application startup.
+(APIServer pid=23885) INFO:     Application startup complete.
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:42:39 [loggers.py:259] Engine 000: Avg prompt throughput: 758.5 tokens/s, Avg generation throughput: 3.7 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:42:49 [loggers.py:259] Engine 000: Avg prompt throughput: 758.4 tokens/s, Avg generation throughput: 8.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:42:59 [loggers.py:259] Engine 000: Avg prompt throughput: 758.5 tokens/s, Avg generation throughput: 7.2 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:43:09 [loggers.py:259] Engine 000: Avg prompt throughput: 755.9 tokens/s, Avg generation throughput: 8.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:43:19 [loggers.py:259] Engine 000: Avg prompt throughput: 1061.9 tokens/s, Avg generation throughput: 7.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:43:29 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 11.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:43:39 [loggers.py:259] Engine 000: Avg prompt throughput: 1035.8 tokens/s, Avg generation throughput: 11.0 tokens/s, Running: 1 reqs, Waiting: 0reqs, GPU KV cache usage: 6.4%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:43:49 [loggers.py:259] Engine 000: Avg prompt throughput: 614.5 tokens/s, Avg generation throughput: 10.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.9%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:43:59 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:44:09 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:44:19 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:44:29 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:44:39 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.6%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:44:49 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:44:59 [loggers.py:259] Engine 000: Avg prompt throughput: 756.0 tokens/s, Avg generation throughput: 8.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.3%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:45:09 [loggers.py:259] Engine 000: Avg prompt throughput: 469.3 tokens/s, Avg generation throughput: 10.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.4%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:45:19 [loggers.py:259] Engine 000: Avg prompt throughput: 778.5 tokens/s, Avg generation throughput: 9.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:45:29 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:45:39 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:45:49 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:45:59 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:46:09 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO 06-28 16:46:19 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 14.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.7%, Prefix cache hit rate: 0.0%
+(APIServer pid=23885) INFO:     127.0.0.1:52252 - "GET /metrics HTTP/1.1" 200 OK
+(APIServer pid=23885) INFO 06-28 16:46:29 [loggers.py:259] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 6.8 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+^C(EngineCore pid=23997) INFO 06-28 16:46:37 [core.py:1201] Shutdown initiated (timeout=0)
+(EngineCore pid=23997) INFO 06-28 16:46:37 [core.py:1224] Shutdown complete
+(APIServer pid=23885) INFO:     Shutting down
+W0628 16:46:37.718982 23997 ProcessGroupNCCL.cpp:1553] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, pleasesee https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=23885) INFO:     Waiting for application shutdown.
+(APIServer pid=23885) INFO:     Application shutdown complete.
+(APIServer pid=23885) INFO:     Finished server process [23885]
+
+
+
+
+
+
+
+
+
+===== throughput: 4-8K =====
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7f3f01f6cc10>, trust_remote_code=False, seed=0, num_prompts=10, dataset_name='custom', no_stream=False, dataset_path='./4-8K_throughput.jsonl', no_oversample=True, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=True, custom_output_len=1024, spec_bench_output_len=256, spec_bench_category=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio=0.0, random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, label=None, backend='openai-chat', base_url=None, host='127.0.0.1', port=8001, endpoint='/v1/chat/completions', header=None, max_concurrency=1, model='Qwen3.5-27B', input_len=None, output_len=None, tokenizer='../Qwen3.5-27B', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=1.0, burstiness=1.0, disable_tqdm=False, num_warmups=2, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=None, result_dir='./test/4-8K_throughput', result_filename='result.json', ignore_eos=False, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,95,99', goodput=None, request_id_prefix='bench-929b8be8-', top_p=None, top_k=None, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, extra_body={'temperature': 0.0}, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds=[25.0, 50.0], plot_dataset_stats=False)
+INFO 06-28 16:42:19 [datasets.py:232] Skipping oversampling. Total samples: 10.
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Warming up with 2 requests...
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:34<00:00, 17.06s/it]
+Warmup run completed.
+Starting main benchmark run...
+Traffic request rate: 1.0
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [03:30<00:00, 21.08s/it]
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     10        
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Request rate configured (RPS):           1.00      
+Benchmark duration (s):                  210.79    
+Total input tokens:                      62196     
+Total generated tokens:                  2575      
+Request throughput (req/s):              0.05      
+Output token throughput (tok/s):         12.22     
+Peak output token throughput (tok/s):    16.00     
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          307.28    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          3287.40   
+Median TTFT (ms):                        3045.00   
+P50 TTFT (ms):                           3045.00   
+P95 TTFT (ms):                           4474.26   
+P99 TTFT (ms):                           4549.86   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          68.88     
+Median TPOT (ms):                        68.88     
+P50 TPOT (ms):                           68.88     
+P95 TPOT (ms):                           69.23     
+P99 TPOT (ms):                           69.29     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           68.83     
+Median ITL (ms):                         69.10     
+P50 ITL (ms):                            69.10     
+P95 ITL (ms):                            69.82     
+P99 ITL (ms):                            70.25     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          21011.98  
+Median E2EL (ms):                        9191.52   
+P50 E2EL (ms):                           9191.52   
+P95 E2EL (ms):                           74712.02  
+P99 E2EL (ms):                           75316.59  
+==================================================
+
+===== result files =====
+./test/4-8K_throughput/result.json
+./test/8-16K_throughput/result.json
+./test/16-32K_throughput/result.json

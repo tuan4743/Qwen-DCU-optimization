@@ -1,0 +1,39 @@
+关闭CUDA_graph后:
+============ Serving Benchmark Result ============
+Successful requests:                     10        
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Request rate configured (RPS):           1.00      
+Benchmark duration (s):                  348.62    
+Total input tokens:                      62196     
+Total generated tokens:                  2575      
+Request throughput (req/s):              0.03      
+Output token throughput (tok/s):         7.39      <-baseline是12.20
+Peak output token throughput (tok/s):    10.00     
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          185.79    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          3403.19   
+Median TTFT (ms):                        3155.51   
+P50 TTFT (ms):                           3155.51   
+P95 TTFT (ms):                           4607.10   
+P99 TTFT (ms):                           4678.01    <-baseline是4789.70
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          122.21    
+Median TPOT (ms):                        122.42    
+P50 TPOT (ms):                           122.42    
+P95 TPOT (ms):                           123.77    
+P99 TPOT (ms):                           123.84     <-baseline是69.0.0
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           121.91    
+Median ITL (ms):                         122.58    
+P50 ITL (ms):                            122.58    
+P95 ITL (ms):                            123.76    
+P99 ITL (ms):                            124.34    
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          34795.26  
+Median E2EL (ms):                        14078.02  
+P50 E2EL (ms):                           14078.02  
+P95 E2EL (ms):                           129297.66 
+P99 E2EL (ms):                           129775.23 
+==================================================
