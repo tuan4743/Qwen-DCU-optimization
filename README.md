@@ -1,7 +1,6 @@
 # 国产加速卡大模型推理优化实录:Qwen3.5-27B × 海光 DCU gfx936 × vLLM
 
 > **将生产级大语言模型推理引入本土加速器** —— 在 Hygon DCU gfx936（非 CUDA、ROCm 系列架构）上的完整适配及内核级优化记录，实测 **输入长度分段的吞吐量提升 60% ~ 163%**。
-> 终稿说明文档见 `优化记录/基于国产加速卡的千问大模型推理服务优化说明文档.md`
 > 本项目为个人独立完成（除PyTorch/HIP基础库外），**未使用任何第三方手写高性能算子库**，所有适配逻辑均为针对gfx936微架构的原创调优。
 > **Agent 说明**:Agent 用于以下方面:代码采样、profile、插桩、代码校验与文档整理。
 
@@ -60,7 +59,7 @@ profile分析栈:
 
 ## 04. 优化汇总
 
-> 详版见 `最终优化报告.md`;逐文件改动与置信度见 `vllm_final/README_变更清单.md`。
+> 详版见 `final_optimization_report.md`;逐文件改动与置信度见 `vllm_final/README_changelog.md`。
 
 | 轮 | 主题 | 关键改动 | 阶段效果(4-8K 吞吐) |
 |---|---|---|---|
@@ -77,16 +76,16 @@ profile分析栈:
 ```
 qwen3_dcu_optimize/
 ├── README.md                       ← 本文件
-├── 最终优化报告.md                  ★ 全貌报告(背景/基线/五轮/经验/风险)
+├── final_optimization_report.md                  ★ 全貌报告(背景/基线/五轮/经验/风险)
 ├── vllm_final/                      ★ 最终修改版代码(12 文件修改)
-│   ├── README_变更清单.md           每文件改动/置信度/未改动项
+│   ├── README_changelog.md           每文件改动/置信度/未改动项
 │   ├── csrc/rocm/skinny_gemms.cu
 │   └── vllm/…(utils.py、rocm.py、triton_*.py、fused_recurrent.py、chunk_o.py、
 │              env_override.py、qwen3_next.py、qwen3_5.py、fla/ops/fused_chunk_preprocessing.py)
 ├── vllm_origin/                     ★ 修改前(fork 基线)同 12 文件,路径镜像
-├── 优化记录/                        ★ 任务文档 01-19 + 终稿说明文档 + 19 张截图
-│   ├── 图片和附件/                   代码对比/效果/指标截图(终稿唯一代码证据)
-│   ├── 工具脚本/                    profile 插桩/归因脚本(19 个)
+├── optimization_records/                        ★ 任务文档 01-19 + 终稿说明文档 + 19 张截图
+│   ├── attachments/                   代码对比/效果/指标截图(终稿唯一代码证据)
+│   ├── scripts/                    profile 插桩/归因脚本(19 个)
 │   └── log/                        启动/错误日志
 ├── profile/                        ★ profile 物证:批3 trace(gz)、pmc 结果、hipkernel 结果、kernel 参数表
 └── docs/                           ← 面向读者的说明
@@ -99,8 +98,8 @@ qwen3_dcu_optimize/
 
 ## 06. 引用与延伸
 
-- 环境与知识沉淀(工具链坑、矩阵指令事实、duty-cycle 方法)详见 `优化记录/` 01-19 任务文档。
-- 若在新一批国产卡(如 gfx938 或更新 DTK)复现,按 `docs/01_final_changes_spec.md`(复现指南)+ `vllm_final/README_变更清单.md` 逐项应用,并优先 A/B 验证 LLMM1 路由对 lm_head 的边界。
+- 环境与知识沉淀(工具链坑、矩阵指令事实、duty-cycle 方法)详见 `optimization_records/` 01-19 任务文档。
+- 若在新一批国产卡(如 gfx938 或更新 DTK)复现,按 `docs/01_final_changes_spec.md`(复现指南)+ `vllm_final/README_changelog.md` 逐项应用,并优先 A/B 验证 LLMM1 路由对 lm_head 的边界。
 
 ## 07. 赛题背景(尾注)
 
