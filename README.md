@@ -1,8 +1,7 @@
 # 国产加速卡大模型推理优化实录:Qwen3.5-27B × 海光 DCU gfx936 × vLLM
 
-> **将生产级大语言模型推理引入本土加速器** —— 在 Hygon DCU gfx936（非 CUDA、ROCm 系列架构）上的完整适配及内核级优化记录，实测 **输入长度分段的吞吐量提升 60% ~ 163%**。
-> 本项目为个人独立完成（除PyTorch/HIP基础库外），**未使用任何第三方手写高性能算子库**，所有适配逻辑均为针对gfx936微架构的原创调优。
-> **Agent 说明**:Agent 用于以下方面:代码采样、profile、插桩、代码校验与文档整理。
+> 本项目为个人团队独立完成（除PyTorch/HIP基础库外），**未使用任何第三方手写高性能算子库**，所有适配逻辑均为针对gfx936微架构的原创调优。  
+> **Agent 说明**:Agent 用于以下方面:代码采样、profile、插桩、代码校验与文档整理。  
 
 ## 01. TL;DR — 最终成果
 
@@ -48,20 +47,9 @@ profile分析栈:
 | 推理框架 | vLLM fork(`OpenDAS/vllm_cscc`,v0.18.1+das.dtk2604,HEAD `fa71803`) |
 | 数学库 | 海光适配 rocBLAS / hipBLASLt(0.10.0)/ aiter;Triton(光合社区可找,暂未适配,慎用) |
 
-### 适配(踩坑)记录 —— 仅简要展示
+## 04. 优化简述
 
-1. **架构白名单**:原始版本vLLM出于通用性考虑, `_ON_GFX9` 仅列 `["gfx90a","gfx942","gfx950"]`,`gfx936` 被排除 → `use_skinny=False`,全部 skinny GEMM 自定义核(LLMM1/wvSplitK)对 DCU 关闭,decode 投影全部落入通用 `F.linear`分支。理论分析,GEMM内核绝大部分情况下一定比常规分支更快.**修复:Python 侧 `(on_gfx9() or on_gfx936())` + LLMM1-only 分支**。
-2. **矩阵指令缺失**:`v_mfma_*` 运行时崩溃(HSA ILLEGAL_INSTRUCTION + KERNEL VMFault,微基准隔离可复现);`v_mmac_*` 可用。判断路径用反汇编 + 微基准,不能使用编译器默认的 mattr。
-3. **Triton 实测崩盘**:gfx936 上 Triton 实测 <1/3 峰值,有记录文档;所有 Triton 路线按低效预期避开;性能敏感算子走 HIP C++ 或原生库,并一律用 torch profiler 实测核名归因防止翻车(之前因为静态推断失误导致浪费了大量时间)。
-4. **capability 错误路径**:gfx936 上报 capability 居然为9.x,触发 vLLM 按 BLOCK=128 选 tile;对 Qwen head_dim=256 的 Prefill 会爆 LDS/严重 thrash → 按共享内存预算出**强制 BLOCK=32** 同时收窄 autotune(BKV=[64], BT=64)为最优划分。
-5. **工具链踩坑,gfx936未适配**:`hipcc` 找不到 clang,通过设置 `HIP_CLANG_PATH=/opt/dtk/lib/llvm/bin` 解决;gfx936 LLVM 后端缺 global→LDS 绕寄存器指令(Cannot select);`-real-size 32`、TF32、FP8(segfault)等 CUDA 盘常规手段在此均不可用。
-6. **运行级保障**:`TORCH_BLAS_PREFER_HIPBLASLT=0`(M=1 不进慢 BLAS 后端)、k>8192 硬封顶回退(避免数值漂移)、cudagraph + duty-cycle 校准(97.3% 满载,端到端瓶颈在 GPU kernel 内部而非调度)。
-
-## 04. 优化汇总
-
-> 详版见 `final_optimization_report.md`;逐文件改动与置信度见 `vllm_final/README_changelog.md`。
-
-| 轮 | 主题 | 关键改动 | 阶段效果(4-8K 吞吐) |
+| 轮 | 主题 | 关键改动 | 4-8K 吞吐效果 |
 |---|---|---|---|
 | 一 | 瘦 GEMV + Prefill 瓦片校准 | 打开 gfx936 的 LLMM1 路由(仅 n==1 & k≤8192 & 无 bias);BLOCK=32 防 LDS 爆;Flash-Decoding 段数 16→32;KV 访存 evict_last | **12.20→16.20(+32.8%)**,破局 |
 | 二 | 长上下文 | 自适应 Flash-Decoding;非对称 Prefill 瓦片 32×16 + stages 3 | 稳定化,16-32K 回升 |
@@ -69,9 +57,7 @@ profile分析栈:
 | 四 | 大瓦片 + 初步融合 | Prefill FA M=128/N=32;Decode GDN BV=128;单阶段 in_proj 融合 | 17.25→19.12;TTFT 首破 2s |
 | 五 | **算子融合** | TILE_N 32→64;**跨阶段 in_proj 权重重排融合**(`_fused_in_proj_weight`);融合 Chunk 预处理(默认关,宏开关) | **19.56 / 14.92 / 12.22 tok/s,TPOT 45.14ms** |
 
-- **归因以 profiler 实测核名为准**vllm在运行过程中函数名会动态改变,静态分析无法查证,并且kernel名称也会撞车,只有将profile桩插入正确内层位置才能得到标准kernel名称;
-
-## 05. 目录结构
+## 05. 仓库目录结构
 
 ```
 qwen3_dcu_optimize/
@@ -82,18 +68,17 @@ qwen3_dcu_optimize/
 │   ├── csrc/rocm/skinny_gemms.cu
 │   └── vllm/…(utils.py、rocm.py、triton_*.py、fused_recurrent.py、chunk_o.py、
 │              env_override.py、qwen3_next.py、qwen3_5.py、fla/ops/fused_chunk_preprocessing.py)
-├── vllm_origin/                     ★ 修改前(fork 基线)同 12 文件,路径镜像
-├── optimization_records/                        ★ 任务文档 01-19 + 终稿说明文档 + 19 张截图
-│   ├── attachments/                   代码对比/效果/指标截图(终稿唯一代码证据)
-│   ├── scripts/                    profile 插桩/归因脚本(19 个)
-│   └── log/                        启动/错误日志
+├── vllm_origin/                     ★ 修改前同 12 文件,路径镜像
+├── optimization_records/                        ★ 任务文档(AI记录文档) 01-19 + 终稿说明文档 + 19 张截图
+│   ├── attachments/                   代码对比/效果/指标截图
+│   ├── scripts/                    profile 插桩/归因脚本
+│   └── log/                        启动/错误日志(仅留样,无参考价值)
 ├── profile/                        ★ profile 物证:批3 trace(gz)、pmc 结果、hipkernel 结果、kernel 参数表
 └── docs/                           ← 面向读者的说明
-    ├── 00_audit_local_vs_final.md  成果总览(30 秒看完)
-    ├── 01_final_changes_spec.md    15 项改动详解(给要复现的人)
-    ├── 02_summary_corrections.md   为什么"算子融合"是最有价值项
-    ├── 03_assets_map.md            仓库导览
-    └── 04_ocr_crosscheck.txt       截图核对底稿(可跳过)
+    ├── 00_audit_local_vs_final.md  成果总览
+    ├── 01_final_changes_spec.md    复现指南
+    ├── 02_summary_corrections.md   挑出来一个重点:"算子融合"
+    └── 03_assets_map.md            仓库导览
 ```
 
 ## 06. 引用与延伸
@@ -103,4 +88,4 @@ qwen3_dcu_optimize/
 
 ## 07. 赛题背景(尾注)
 
-本项目源自 2026 年国产算力推理优化赛题——Qwen3.5-27B 单请求在线推理(评测窗口 4-8K/8-16K/16-32K)。同台队伍追得很紧,**最终卡线止步:与前方差距不到 1 分钟**。赛题期间长上下文配置存在偶发抖动(瓦片/LDS 冲突致性能抖动 >5%);**赛后已通过 BV=128 定参与瓦片校准(autotune 收窄)解决,当前版本已稳定**。本文数据为赛题收官值,仓库为赛后整理稿。
+本项目源自 2026 年国产算力推理优化赛题——Qwen3.5-27B 单请求在线推理(评测窗口 4-8K/8-16K/16-32K)。赛题期间长上下文配置存在偶发抖动(瓦片/LDS 冲突致性能抖动 >5%);**赛后已通过 BV=128 定参与瓦片校准(autotune 收窄)解决,当前版本已稳定**。本文数据为赛题收官值,仓库为赛后整理,完成未完成优化并完善的最终版。
